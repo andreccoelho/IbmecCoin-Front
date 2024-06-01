@@ -3,13 +3,13 @@ import { Top } from "./Style";
 
 const Header = () => (
   <Top>
-    <Link to="/">Home</Link>
-    <Link to="/fotos">Fotos</Link>
-    <Link to="/atletas">Atletas</Link>
+    <Link to="/loja/loja">Loja</Link>
+    <Link to="/">Menu</Link>
+    <Link to="/qrcode/leitor">Qrcode</Link>
     
     { window.sessionStorage.getItem('accessToken')
-    ? <Link to="/logout">Logout</Link>
-    : <Link to="/login">Login</Link>
+    ? <Link to="/aluno">Conta</Link>
+    : <Link to="/auth/login">Login</Link>
     }
     
   </Top>

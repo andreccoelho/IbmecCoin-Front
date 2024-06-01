@@ -62,8 +62,8 @@ const Index = () => {
             <h1>Bem vindo ao IbmecCoin!</h1>
 
             <div>
-                <Link to={'/login'}>Login</Link>
-                <Link to={'/registro'}>Registrar</Link>
+                <Link to={'/auth/login'}>Login</Link>
+                <Link to={'/auth/registro'}>Registrar</Link>
             </div>
         </Base>
     )
