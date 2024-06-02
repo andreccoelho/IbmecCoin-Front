@@ -21,15 +21,18 @@ import LojaItem from './pages/loja/item';
 import Loja from './pages/loja/loja';
 import BeneficiarProfessor from './pages/professor/beneficiar';
 import TransacoesProfessor from './pages/professor/transacoes';
-import QrCodeCriar from './pages/qrcode/criar';
-import QrCodeExibirToken from './pages/qrcode/exibir-token';
+import QrcodeCriar from './pages/qrcode/criar';
 import QrCodeFoto from './pages/qrcode/foto';
 import QrCodeLeitor from './pages/qrcode/leitor';
 import QrCodeRegistroToken from './pages/qrcode/registro-token';
 import QrCodeValidar from './pages/qrcode/validar';
 import TurmaCriar from './pages/turma/criar';
 import TurmaEntrar from './pages/turma/entrar';
-import TurmaInformacao from './pages/turma/informacao';
+import Turma from './pages/turma/informacao';
+import Perfil from "./pages/perfil";
+import CriarTurma from "./pages/turma/criar";
+import Saldo from "./pages/saldo";
+import Qrcode from "./pages/qrcode/qrcode";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -47,8 +50,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/professor" element={<Professor />} />
-        <Route path="/aluno" element={<Aluno />} />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="/aluno/historico" element={<HistoricoAluno />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/registro" element={<Registro />} />
@@ -63,15 +65,16 @@ root.render(
         <Route path="/loja/loja" element={<Loja />} />
         <Route path="/professor/beneficiar" element={<BeneficiarProfessor />} />
         <Route path="/professor/transacoes" element={<TransacoesProfessor />} />
-        <Route path="/qrcode/criar" element={<QrCodeCriar />} />
-        <Route path="/qrcode/exibir-token" element={<QrCodeExibirToken />} />
-        <Route path="/qrcode/foto" element={<QrCodeFoto />} />
+        <Route path="/qrcode/criar" element={<QrcodeCriar />} />
+        <Route path="/qrcode" element={<Qrcode />} />
+        <Route path="/qrcode/foto/:token" element={<QrCodeFoto />} />
         <Route path="/qrcode/leitor" element={<QrCodeLeitor />} />
         <Route path="/qrcode/registro-token" element={<QrCodeRegistroToken />} />
         <Route path="/qrcode/validar" element={<QrCodeValidar />} />
-        <Route path="/turma/criar" element={<TurmaCriar />} />
+        <Route path="/turma/criar" element={<CriarTurma />} />
         <Route path="/turma/entrar" element={<TurmaEntrar />} />
-        <Route path="/turma/informacao" element={<TurmaInformacao />} />
+        <Route path="/turma/:id_turma" element={<Turma />} />
+        <Route path="/saldo" element={<Saldo />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

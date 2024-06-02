@@ -12,11 +12,7 @@ const Index = () => {
             const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
                 setUserType(user.tipo);
-                if (user.tipo === 'aluno') {
-                    navigate('/aluno');
-                } else if (user.tipo === 'professor') {
-                    navigate('/professor');
-                }
+                navigate('/perfil');
             } else {
                 setIsCheckingUser(false);
             }

@@ -3,11 +3,16 @@ import styled from "styled-components";
 const NavBarContainer = styled.div`
     display: flex;
     justify-content: space-around;
-    background-color: #ffffff;
+    background-color: var(--primaria);
     padding: 10px;
     position: fixed;
     bottom: 0;
     width: 100%;
+    
+    svg{
+        color: var(--destaque);
+        width: 40px;
+    }
 `;
 
 const Tab = styled.div`
@@ -21,7 +26,7 @@ const Tab = styled.div`
   ${({ isActive }) =>
     isActive &&
     `
-    color: #9b51e0;
+    color: var(--destaque);
     &:after {
       content: '';
       display: block;
@@ -34,7 +39,7 @@ const Tab = styled.div`
   `}
 
   &:hover {
-    color: #9b51e0;
+    color: var(--destaque);
   }
 `;
 

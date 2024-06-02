@@ -11,21 +11,19 @@ const AuthLogin = () => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/auth/loginTeste', {
+            const response = await fetch('http://localhost:5000/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username: matricula, password: senha }),
+                body: JSON.stringify({ matricula: matricula, senha: senha }),
             });
 
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('user', JSON.stringify(data.user));
-                if (data.user.tipo === 'aluno') {
-                    navigate('/aluno');
-                } else if (data.user.tipo === 'professor') {
-                    navigate('/professor');
+                if (data.user) {
+                    navigate('/perfil');
                 }
             } else {
                 alert(data.message);
