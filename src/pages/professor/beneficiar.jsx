@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const ProfessorBeneficiar = () => {
     return (
-        <div>
+        <Base>
             <h1>Beneficiar</h1>
-        </div>
+        </Base>
     )
 }
 

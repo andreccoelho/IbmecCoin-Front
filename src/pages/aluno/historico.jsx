@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const AlunoHistorico = () => {
     return (
-        <div>
+        <Base>
         <h1>Aluno Histórico</h1>
-        </div>
+        </Base>
     );
 }
 

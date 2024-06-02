@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Base from "../Base";
 
 const AuthLogin = () => {
     const [matricula, setMatricula] = useState('');
@@ -15,7 +16,7 @@ const AuthLogin = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ matricula, senha }),
+                body: JSON.stringify({ username: matricula, password: senha }),
             });
 
             const data = await response.json();
@@ -36,7 +37,7 @@ const AuthLogin = () => {
     };
 
     return (
-        <div>
+        <Base>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <div>
@@ -49,7 +50,7 @@ const AuthLogin = () => {
                 </div>
                 <button type="submit">Login</button>
             </form>
-        </div>
+        </Base>
     );
 };
 

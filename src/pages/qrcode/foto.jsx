@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const QrcodeFoto = () => {
     return (
-        <div>
+        <Base>
             <h1>QrcodeFoto</h1>
-        </div>
+        </Base>
     )
 }
 

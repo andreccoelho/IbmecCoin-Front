@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const GrupoInformacao = () => {
     return (
-        <div>
+        <Base>
         <h1>Informação do Grupo</h1>
-        </div>
+        </Base>
     )
 }
 

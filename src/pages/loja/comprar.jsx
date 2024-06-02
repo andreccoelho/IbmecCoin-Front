@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const LojaComprar = () => {
     return (
-        <div>
+        <Base>
         <h1>Comprar</h1>
-        </div>
+        </Base>
     )
 }
 

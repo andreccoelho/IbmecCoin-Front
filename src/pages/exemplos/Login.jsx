@@ -2,7 +2,7 @@ import { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import { auth } from "../../config/Firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import Base from "./Base";
+import Base from "../Base";
 
 const Login = () => {
   const [email, setEmail] = useState('');

@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const QrcodeExibirToken = () => {
     return (
-        <div>
+        <Base>
         <h1>Exibir Token</h1>
-        </div>
+        </Base>
     )
 }
 

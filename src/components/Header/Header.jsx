@@ -1,18 +1,31 @@
 import { Link } from "react-router-dom";
-import { Top } from "./Style";
+import {NavBarContainer, Tab} from "./Style";
+import { FaStore, FaInfoCircle, FaQrcode, FaUser } from 'react-icons/fa';
+import React, {useState} from "react";
 
-const Header = () => (
-  <Top>
-    <Link to="/loja/loja">Loja</Link>
-    <Link to="/">Menu</Link>
-    <Link to="/qrcode/leitor">Qrcode</Link>
-    
-    { window.sessionStorage.getItem('accessToken')
-    ? <Link to="/aluno">Conta</Link>
-    : <Link to="/auth/login">Login</Link>
-    }
-    
-  </Top>
-)
+const Header = () => {
+    let pagina_atual = window.location.href;
+    const [activeTab, setActiveTab] = useState(pagina_atual);
+
+    return (
+        <NavBarContainer>
+            <Tab isActive={activeTab === 'home'} onClick={() => setActiveTab('home')}>
+                <Link to="/loja/loja"><FaStore /></Link>
+            </Tab>
+            <Tab isActive={activeTab === 'grid'} onClick={() => setActiveTab('grid')}>
+                <Link to="/"><FaInfoCircle /></Link>
+            </Tab>
+            <Tab isActive={activeTab === 'send'} onClick={() => setActiveTab('send')}>
+                <Link to="/qrcode/leitor"><FaQrcode /></Link>
+            </Tab>
+            <Tab isActive={activeTab === 'profile'} onClick={() => setActiveTab('profile')}>
+                { localStorage.getItem('user')
+                    ? <Link to="/aluno"><FaUser /></Link>
+                    : <Link to="/auth/login"><FaUser /></Link>
+                }
+            </Tab>
+        </NavBarContainer>
+    )
+}
 
 export default Header;

@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const QrcodeCriar = () => {
     return (
-        <div>
+        <Base>
         <h1>Criar QR Code</h1>
-        </div>
+        </Base>
     )
 }
 

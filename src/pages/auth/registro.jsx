@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const AuthRegistro = () => {
     return (
-        <div>
+        <Base>
             <h1>Registro</h1>
-        </div>
+        </Base>
     )
 }
 

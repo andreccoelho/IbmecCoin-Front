@@ -1,5 +1,7 @@
+import Base from "../Base";
+
 const GrupoConvidar = () => {
-    return <h1>GrupoConvidar</h1>
+    return (<Base>GrupoConvidar</Base>)
 }
 
 export default GrupoConvidar;

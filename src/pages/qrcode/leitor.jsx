@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const QrcodeLeitor = () => {
     return (
-        <div>
+        <Base>
         <h1>Leitor de QR Code</h1>
-        </div>
+        </Base>
     )
 }
 

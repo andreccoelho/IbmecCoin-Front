@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const QrcodeRegistroToken = () => {
     return (
-        <div>
+        <Base>
         <h1>Registro de token</h1>
-        </div>
+        </Base>
     );
 }
 

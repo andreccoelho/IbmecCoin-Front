@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const QrcodeValidar = () => {
     return (
-        <div>
+        <Base>
         <h1>Validar QR Code</h1>
-        </div>
+        </Base>
     );
 }
 

@@ -1,5 +1,11 @@
+import Base from "./Base";
+
 const Aluno = () => {
-    return <h1>Aluno</h1>
+    return (
+        <Base>
+            <h1>Aluno</h1>
+        </Base>
+    )
 }
 
 export default Aluno;

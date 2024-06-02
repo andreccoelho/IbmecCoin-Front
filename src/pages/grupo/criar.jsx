@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const GrupoCriar = () => {
     return (
-        <div>
+        <Base>
         <h1>Criar Grupo</h1>
-        </div>
+        </Base>
     );
 }
 

@@ -1,8 +1,10 @@
+import Base from "../Base";
+
 const TurmaInformacao = () => {
     return (
-        <div>
+        <Base>
         <h1>Informações da turma</h1>
-        </div>
+        </Base>
     );
 }
 

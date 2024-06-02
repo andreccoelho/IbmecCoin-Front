@@ -1,5 +1,8 @@
+import Base from "../Base";
+
 const GrupoAceitar = () => {
-    return <div>GrupoAceitar</div>
+    return (
+        <Base>GrupoAceitar</Base>)
 }
 
 export default GrupoAceitar
