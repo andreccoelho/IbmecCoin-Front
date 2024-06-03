@@ -1,27 +1,50 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
-const Top = styled.header`
-  padding: .5em 2em;
-  background-color: var(--secundaria);
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  a {
-    text-align: center;
-    padding: .3em;
-    margin: 0 .7em;
-    min-width: 5em;
-    background-color: var(--background);
-    text-decoration: none;
-    font-weight: bold;
-    color: var(--detalhe);
-    text-transform: uppercase;
-    /*border-radius: .3em;*/
-    &:hover{
-      background-color: var(--destaque);
-      color: var(--secundaria);
+const NavBarContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--primaria);
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    
+    svg{
+        color: var(--destaque);
+        width: 40px;
     }
-  }
-`
+`;
 
-export {Top}
+const Tab = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;
+  transition: color 0.3s ease;
+
+  ${({ isActive }) =>
+    isActive &&
+    `
+    color: var(--destaque);
+    &:after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 4px;
+      background: #9b51e0;
+      margin-top: 10px;
+      border-radius: 2px;
+    }
+  `}
+
+  &:hover {
+    color: var(--destaque);
+  }
+`;
+
+const Icon = styled.div`
+  font-size: 24px;
+`;
+
+export { NavBarContainer, Tab, Icon };
