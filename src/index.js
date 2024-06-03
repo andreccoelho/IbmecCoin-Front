@@ -5,8 +5,6 @@ import { auth } from "./config/Firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
 import Index from './pages/index';
-import Professor from './pages/professor';
-import Aluno from './pages/aluno';
 import HistoricoAluno from './pages/aluno/historico';
 import Login from './pages/auth/login';
 import Registro from './pages/auth/registro';
@@ -14,9 +12,7 @@ import GrupoAceitar from './pages/grupo/aceitar';
 import GrupoConvidar from './pages/grupo/convidar';
 import GrupoConvites from './pages/grupo/convites';
 import GrupoCriar from './pages/grupo/criar';
-import GrupoInformacao from './pages/grupo/informacao';
 import GrupoTransferir from './pages/grupo/transferir';
-import LojaComprar from './pages/loja/comprar';
 import LojaItem from './pages/loja/item';
 import Loja from './pages/loja/loja';
 import BeneficiarProfessor from './pages/professor/beneficiar';
@@ -32,7 +28,8 @@ import Turma from './pages/turma/informacao';
 import Perfil from "./pages/perfil";
 import CriarTurma from "./pages/turma/criar";
 import Saldo from "./pages/saldo";
-import Qrcode from "./pages/qrcode/qrcode";
+import Qrcode from "./pages/qrcode";
+import Grupo from "./pages/grupo/informacao";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -51,29 +48,28 @@ root.render(
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/perfil" element={<Perfil />} />
-        <Route path="/aluno/historico" element={<HistoricoAluno />} />
+        <Route path="/saldo/historico" element={<HistoricoAluno />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/registro" element={<Registro />} />
-        <Route path="/grupo/aceitar" element={<GrupoAceitar />} />
-        <Route path="/grupo/convidar" element={<GrupoConvidar />} />
-        <Route path="/grupo/convites" element={<GrupoConvites />} />
-        <Route path="/grupo/criar" element={<GrupoCriar />} />
-        <Route path="/grupo/informacao" element={<GrupoInformacao />} />
-        <Route path="/grupo/transferir" element={<GrupoTransferir />} />
-        <Route path="/loja/comprar" element={<LojaComprar />} />
-        <Route path="/loja/item" element={<LojaItem />} />
-        <Route path="/loja/loja" element={<Loja />} />
-        <Route path="/professor/beneficiar" element={<BeneficiarProfessor />} />
-        <Route path="/professor/transacoes" element={<TransacoesProfessor />} />
+        <Route path="/saldo/grupo/aceitar" element={<GrupoAceitar />} />
+        <Route path="/saldo/grupo/convidar" element={<GrupoConvidar />} />
+        <Route path="/saldo/grupo/convites" element={<GrupoConvites />} />
+        <Route path="/saldo/grupo/criar" element={<GrupoCriar />} />
+        <Route path="/saldo/grupo" element={<Grupo />} />
+        <Route path="/saldo/grupo/transferir/:destinatario_matricula" element={<GrupoTransferir />} />
+        <Route path="/loja/item/:id_item" element={<LojaItem />} />
+        <Route path="/loja" element={<Loja />} />
+        <Route path="/saldo/beneficiar" element={<BeneficiarProfessor />} />
+        <Route path="/saldo/transacoes" element={<TransacoesProfessor />} />
         <Route path="/qrcode/criar" element={<QrcodeCriar />} />
         <Route path="/qrcode" element={<Qrcode />} />
         <Route path="/qrcode/foto/:token" element={<QrCodeFoto />} />
         <Route path="/qrcode/leitor" element={<QrCodeLeitor />} />
         <Route path="/qrcode/registro-token" element={<QrCodeRegistroToken />} />
         <Route path="/qrcode/validar" element={<QrCodeValidar />} />
-        <Route path="/turma/criar" element={<CriarTurma />} />
-        <Route path="/turma/entrar" element={<TurmaEntrar />} />
-        <Route path="/turma/:id_turma" element={<Turma />} />
+        <Route path="/perfil/turma/criar" element={<CriarTurma />} />
+        <Route path="/perfil/turma/entrar" element={<TurmaEntrar />} />
+        <Route path="/perfil/turma/:id_turma" element={<Turma />} />
         <Route path="/saldo" element={<Saldo />} />
       </Routes>
     </BrowserRouter>

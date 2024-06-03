@@ -1,7 +1,97 @@
 import React, { useEffect, useState } from 'react';
-import Base from './Base';
 import { Link } from 'react-router-dom';
-import {logoutUser} from "../util/auth";
+import styled from 'styled-components';
+import Base from './Base';
+import ProfessorLogin from '../components/Logout';
+
+const AlunoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #fff;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+`;
+
+const Header = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primaria);
+    color: white;
+    padding: 1em;
+    border-radius: 10px;
+`;
+
+const Name = styled.h2`
+    font-size: 1.2em;
+    margin: 0;
+`;
+
+const BalanceContainer = styled.div`
+    margin: 1em 0;
+    text-align: center;
+`;
+
+const Balance = styled.h1`
+    font-size: 3em;
+    color: var(--primaria);
+    margin: 0;
+`;
+
+const InfoContainer = styled.div`
+    background-color: #f7f7f7;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+`;
+
+const InfoItem = styled.p`
+    margin: 0.5em 0;
+    font-size: 1em;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    gap: 1em;
+`;
+
+const StyledLink = styled(Link)`
+    display: inline-block;
+    text-align: center;
+    padding: 0.8em 1em;
+    width: 100%;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1.5em;
+    text-decoration: none;
+    transition: background 0.3s ease;
+
+    &:hover {
+        background-color: #3700b3;
+    }
+`;
+
+const LogoutButton = styled.button`
+    display: inline-block;
+    text-align: center;
+    padding: 0.8em 1em;
+    width: 100%;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    color: #333;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+
+    &:hover {
+        background-color: #bdbdbd;
+    }
+`;
 
 const Aluno = () => {
     const storedUser = localStorage.getItem('user');
@@ -13,12 +103,12 @@ const Aluno = () => {
     useEffect(() => {
         const fetchAlunoData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/aluno/informacao`, {
+                const response = await fetch('http://localhost:5000/aluno/informacao', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ matricula: user['matricula'] }),
+                    body: JSON.stringify({ matricula: user.matricula }),
                 });
 
                 const data = await response.json();
@@ -47,48 +137,34 @@ const Aluno = () => {
     }
 
     return (
-        <>
-            {error && <p>{error}</p>}
-            <div className="aluno-info">
-                <h1>PÁGINA DO ALUNO</h1>
-                <h2>INFORMAÇÕES</h2>
-                {aluno ? (
-                    <>
-                        <p>Usuário logado: {aluno.nome}</p>
-                        <p>Matrícula: {aluno.matricula}</p>
-                        <p>Saldo: {aluno.saldo}</p>
-                        <p>Turma: {aluno.id_turma}</p>
-                        <p>Tipo: {aluno.tipo}</p>
-                        <p>Grupo: {aluno.id_grupo}</p>
-                    </>
-                ) : (
-                    <p>Loading...</p>
-                )}
-            </div>
-            <div className="aluno-turma">
-                <h2>TURMA</h2>
-                {aluno && !aluno.id_turma ? (
-                    <Link to="/turma/entrar">Entrar em turma</Link>
-                ) : (
-                    <Link to={`/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</Link>
-                )}
-            </div>
-            <div className="aluno-grupo">
-                <h2>GRUPO</h2>
-                {aluno && !aluno.id_grupo ? (
-                    <>
-                        <Link to="/grupo/criar">Criar grupo</Link>
-                        <Link to="/grupo/convites">Ver convites</Link>
-                    </>
-                ) : (
-                    <Link to="/grupo/informacao">Ver grupo</Link>
-                )}
-            </div>
-            <div className="aluno-login">
-                <h2>LOGIN</h2>
-                <button onClick={logoutUser}>DESLOGAR</button>
-            </div>
-        </>
+        <Base>
+            <AlunoContainer>
+                <Header>
+                    <Name>Aluno: {aluno ? aluno.nome : 'Loading...'}</Name>
+                </Header>
+                <BalanceContainer>
+                    <Balance>{aluno ? `${aluno.saldo} IC` : 'Loading...'}</Balance>
+                </BalanceContainer>
+                <InfoContainer>
+                    <h2>INFORMAÇÕES</h2>
+                    {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
+                    <InfoItem>Matrícula: {aluno ? aluno.matricula : 'Loading...'}</InfoItem>
+                    <InfoItem>Turma: {aluno ? aluno.id_turma : 'Loading...'}</InfoItem>
+                    <InfoItem>Tipo: {aluno ? aluno.tipo : 'Loading...'}</InfoItem>
+                    <InfoItem>Grupo: {aluno ? aluno.id_grupo : 'Loading...'}</InfoItem>
+                </InfoContainer>
+                <ButtonContainer>
+                    {aluno && !aluno.id_turma ? (
+                        <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
+                    ) : (
+                        <StyledLink to={`/perfil/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</StyledLink>
+                    )}
+                    <LogoutButton>
+                        <ProfessorLogin />
+                    </LogoutButton>
+                </ButtonContainer>
+            </AlunoContainer>
+        </Base>
     );
 };
 
