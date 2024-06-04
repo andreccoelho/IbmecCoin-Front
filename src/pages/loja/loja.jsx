@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { ClipLoader } from 'react-spinners';
 import Base from '../Base';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -123,6 +124,7 @@ const LojaItens = () => {
     const [valor, setValor] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [loading, setLoading] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -218,6 +220,7 @@ const LojaItens = () => {
     };
 
     const handleBuyItem = async (id_item) => {
+        setLoading(prev => ({ ...prev, [id_item]: true }));
         try {
             const response = await fetch(`http://localhost:5000/loja/comprar`, {
                 method: 'POST',
@@ -236,6 +239,8 @@ const LojaItens = () => {
         } catch (error) {
             console.error('Error buying item:', error);
             setError('An error occurred. Please try again.');
+        } finally {
+            setLoading(prev => ({ ...prev, [id_item]: false }));
         }
     };
 
@@ -249,7 +254,7 @@ const LojaItens = () => {
                 {error && (
                     <Message
                         type="error"
-                        initial={{                        opacity: 0 }}
+                        initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
                     >
@@ -310,8 +315,9 @@ const LojaItens = () => {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.5, delay: 0.8 }}
+                                    disabled={loading[item.id_item]}
                                 >
-                                    Comprar
+                                    {loading[item.id_item] ? <ClipLoader color="#fff" size={20} /> : 'Comprar'}
                                 </CardButton>
                             )}
                         </Card>
@@ -360,4 +366,3 @@ const LojaItens = () => {
 };
 
 export default LojaItens;
-

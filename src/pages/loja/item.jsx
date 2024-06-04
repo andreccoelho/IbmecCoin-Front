@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { ClipLoader } from 'react-spinners';
 import Base from '../Base';
 import { useParams } from 'react-router-dom';
 
@@ -52,6 +53,7 @@ const ItemDetalhe = () => {
     const [item, setItem] = useState(null);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchItem = async () => {
@@ -79,6 +81,7 @@ const ItemDetalhe = () => {
     }, [id_item]);
 
     const handleBuyItem = async () => {
+        setLoading(true);
         try {
             const response = await fetch(`http://localhost:5000/loja/comprar`, {
                 method: 'POST',
@@ -97,6 +100,8 @@ const ItemDetalhe = () => {
         } catch (error) {
             console.error('Error buying item:', error);
             setError('An error occurred. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -142,8 +147,9 @@ const ItemDetalhe = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.4 }}
+                            disabled={loading}
                         >
-                            Comprar
+                            {loading ? <ClipLoader color="#fff" size={20} /> : 'Comprar'}
                         </Button>
                     </>
                 ) : (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { ClipLoader } from 'react-spinners';
 import Base from '../Base';
 
 const LoginContainer = styled(motion.div)`
@@ -71,11 +72,13 @@ const AuthLogin = () => {
     const [matricula, setMatricula] = useState('');
     const [senha, setSenha] = useState('');
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError(null);
+        setLoading(true);
 
         try {
             const response = await fetch('http://localhost:5000/auth/login', {
@@ -96,6 +99,8 @@ const AuthLogin = () => {
         } catch (error) {
             console.error('Error during login:', error);
             setError('An error occurred. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -120,13 +125,14 @@ const AuthLogin = () => {
                     setSenha={setSenha}
                     handleSubmit={handleSubmit}
                     error={error}
+                    loading={loading}
                 />
             </LoginContainer>
         </Base>
     );
 };
 
-const LoginForm = ({ matricula, senha, setMatricula, setSenha, handleSubmit, error }) => {
+const LoginForm = ({ matricula, senha, setMatricula, setSenha, handleSubmit, error, loading }) => {
     return (
         <Form
             initial={{ opacity: 0 }}
@@ -170,8 +176,9 @@ const LoginForm = ({ matricula, senha, setMatricula, setSenha, handleSubmit, err
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
+                disabled={loading}
             >
-                Login
+                {loading ? <ClipLoader color="#fff" size={20} /> : 'Login'}
             </Button>
         </Form>
     );
