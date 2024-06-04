@@ -30,6 +30,7 @@ import CriarTurma from "./pages/turma/criar";
 import Saldo from "./pages/saldo";
 import Qrcode from "./pages/qrcode";
 import Grupo from "./pages/grupo/informacao";
+import Grupos from "./pages/grupo/grupos";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -57,6 +58,7 @@ root.render(
         <Route path="/saldo/grupo/criar" element={<GrupoCriar />} />
         <Route path="/saldo/grupo" element={<Grupo />} />
         <Route path="/saldo/grupo/transferir/:destinatario_matricula" element={<GrupoTransferir />} />
+        <Route path="/saldo/grupos" element={<Grupos />} />
         <Route path="/loja/item/:id_item" element={<LojaItem />} />
         <Route path="/loja" element={<Loja />} />
         <Route path="/saldo/beneficiar" element={<BeneficiarProfessor />} />

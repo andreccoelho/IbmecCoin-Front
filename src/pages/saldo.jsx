@@ -146,6 +146,10 @@ const Saldo = () => {
                             <SectionTitle>HISTÓRICO</SectionTitle>
                             <StyledLink to="/saldo/transacoes">Ver transações</StyledLink>
                         </Section>
+                        <Section>
+                            <SectionTitle>GRUPOS</SectionTitle>
+                            <StyledLink to="/saldo/grupos">Ver grupos</StyledLink>
+                        </Section>
                     </>
                 )}
             </SaldoContainer>

@@ -32,6 +32,8 @@ const CardContainer = styled.div`
     margin-bottom: 1em;
 `;
 
+export {CardContainer};
+
 const Card = styled.div`
     background-color: white;
     padding: 1em;
@@ -183,7 +185,7 @@ const LojaItens = () => {
         }
 
         fetchItens();
-    }, [user]);
+    }, [user, itens]);
 
     if (isCheckingUser) {
         return <div>Verificando usuário...</div>;
@@ -246,10 +248,10 @@ const LojaItens = () => {
                 </Header>
 
                 {aluno && (
-                    <>
+                    <CardContainer>
                         <h2>SALDO</h2>
                         <p>Seu saldo é de IbmecCoins {aluno.saldo}</p>
-                    </>
+                    </CardContainer>
                 )}
 
                 <CardContainer>

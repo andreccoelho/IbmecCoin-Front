@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Base from './Base';
 import { logoutUser } from '../util/auth';
-import ProfessorLogin from '../components/Logout';
+import Logout from '../components/Logout';
 
 const ProfessorContainer = styled.div`
     display: flex;
@@ -11,7 +11,7 @@ const ProfessorContainer = styled.div`
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
@@ -96,7 +96,15 @@ const StyledLink = styled(Link)`
   text-decoration: none;
   transition: background 0.3s ease;
   margin-top: 1em;
-
+    
+    button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    
   &:hover {
     background-color: #3700b3;
   }
@@ -148,37 +156,39 @@ const Professor = () => {
     }
 
     return (
-        <Base>
-            <ProfessorContainer>
+        <>
+            <CardContainer>
                 <Header>
                     <Name>Professor: {professor ? professor.nome : 'Loading...'}</Name>
                 </Header>
-                <InfoContainer>
-                    <h2>INFORMAÇÕES</h2>
-                    {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
-                    <InfoItem>Matrícula: {professor ? professor.matricula : 'Loading...'}</InfoItem>
-                    <InfoItem>Email: {professor ? professor.email : 'Loading...'}</InfoItem>
-                </InfoContainer>
-                <CardContainer>
-                    <h2>TURMAS</h2>
-                    {turmas.length > 0 ? (
-                        turmas.map((turma) => (
-                            <Card key={turma.id_turma}>
-                                <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
-                                <CardItem><strong>Quantidade alunos:</strong> {turma.turma.length}</CardItem>
-                                <CardButton to={`/perfil/turma/${turma.id_turma}`}>Acessar</CardButton>
-                            </Card>
-                        ))
-                    ) : (
-                        <h3>Não há turmas disponíveis</h3>
-                    )}
-                    <StyledLink to="/perfil/turma/criar">Criar turma</StyledLink>
-                </CardContainer>
+                    <InfoContainer>
+                        <h2>INFORMAÇÕES</h2>
+                        {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
+                        <InfoItem>Matrícula: {professor ? professor.matricula : 'Loading...'}</InfoItem>
+                        <InfoItem>Email: {professor ? professor.email : 'Loading...'}</InfoItem>
+                    </InfoContainer>
+            </CardContainer>
+            <CardContainer>
+                <h2>TURMAS</h2>
+                {turmas.length > 0 ? (
+                    turmas.map((turma) => (
+                        <Card key={turma.id_turma}>
+                            <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
+                            <CardItem><strong>Quantidade alunos:</strong> {turma.turma.length}</CardItem>
+                            <CardButton to={`/perfil/turma/${turma.id_turma}`}>Acessar</CardButton>
+                        </Card>
+                    ))
+                ) : (
+                    <h3>Não há turmas disponíveis</h3>
+                )}
+                <StyledLink to="/perfil/turma/criar">Criar turma</StyledLink>
+            </CardContainer>
+            <CardContainer>
                 <StyledLink as="div">
-                    <ProfessorLogin />
+                    <Logout />
                 </StyledLink>
-            </ProfessorContainer>
-        </Base>
+            </CardContainer>
+        </>
     );
 };
 

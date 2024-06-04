@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Base from './Base';
-import ProfessorLogin from '../components/Logout';
+import Logout from '../components/Logout';
+import {CardContainer} from "./loja/loja";
 
 const AlunoContainer = styled.div`
     display: flex;
@@ -87,6 +88,15 @@ const LogoutButton = styled.button`
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
+    
+    button{
+        background-color: #e0e0e0;
+        font-size: 1.5em;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
 
     &:hover {
         background-color: #bdbdbd;
@@ -137,11 +147,11 @@ const Aluno = () => {
     }
 
     return (
-        <Base>
+        <CardContainer>
+            <Header>
+                <Name>Aluno: {aluno ? aluno.nome : 'Loading...'}</Name>
+            </Header>
             <AlunoContainer>
-                <Header>
-                    <Name>Aluno: {aluno ? aluno.nome : 'Loading...'}</Name>
-                </Header>
                 <BalanceContainer>
                     <Balance>{aluno ? `${aluno.saldo} IC` : 'Loading...'}</Balance>
                 </BalanceContainer>
@@ -153,18 +163,18 @@ const Aluno = () => {
                     <InfoItem>Tipo: {aluno ? aluno.tipo : 'Loading...'}</InfoItem>
                     <InfoItem>Grupo: {aluno ? aluno.id_grupo : 'Loading...'}</InfoItem>
                 </InfoContainer>
-                <ButtonContainer>
-                    {aluno && !aluno.id_turma ? (
-                        <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
-                    ) : (
-                        <StyledLink to={`/perfil/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</StyledLink>
-                    )}
-                    <LogoutButton>
-                        <ProfessorLogin />
-                    </LogoutButton>
-                </ButtonContainer>
             </AlunoContainer>
-        </Base>
+            <ButtonContainer>
+                {aluno && !aluno.id_turma ? (
+                    <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
+                ) : (
+                    <StyledLink to={`/perfil/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</StyledLink>
+                )}
+                <LogoutButton>
+                    <Logout />
+                </LogoutButton>
+            </ButtonContainer>
+        </CardContainer>
     );
 };
 

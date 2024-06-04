@@ -85,9 +85,9 @@ const Qrcode = () => {
                 </Header>
 
                 {userType === 'aluno' ? (
-                    <Section>
+                    <>
                         <QrcodeLeitor />
-                    </Section>
+                    </>
                 ) : (
                     <Section>
                         <SectionTitle>QRCODE</SectionTitle>

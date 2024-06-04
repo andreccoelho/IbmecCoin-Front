@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Base from '../Base';
+import {CardContainer} from "../loja/loja";
 
 const QrcodeContainer = styled.div`
   display: flex;
@@ -142,32 +143,28 @@ const QrcodeLeitor = () => {
     };
 
     return (
-        <Base>
-            <QrcodeContainer>
-                {error && <Message type="error">{error}</Message>}
-                {success && <Message type="success">{success}</Message>}
-                <Header>
-                    <h1>Leitor de QRCode</h1>
-                </Header>
-                <p>Insira o código do QRCode ou scannear o QRCode</p>
-                <Form onSubmit={handleValidateQR}>
-                    <Input
-                        type="text"
-                        name="token"
-                        placeholder="Código do QRCode"
-                        value={token}
-                        onChange={(e) => setToken(e.target.value)}
-                        required
-                    />
-                    <Button type="submit">Validar</Button>
-                </Form>
+        <CardContainer>
+            {error && <Message type="error">{error}</Message>}
+            {success && <Message type="success">{success}</Message>}
+            <h1>Leitor de QRCode</h1>
+            <p>Insira o código do QRCode ou scannear o QRCode</p>
+            <Form onSubmit={handleValidateQR}>
+                <Input
+                    type="text"
+                    name="token"
+                    placeholder="Código do QRCode"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    required
+                />
+                <Button type="submit">Validar</Button>
+            </Form>
 
-                <Form onSubmit={handleFileUpload}>
-                    <Input type="file" onChange={handleFileChange} />
-                    <Button type="submit">Upload File</Button>
-                </Form>
-            </QrcodeContainer>
-        </Base>
+            <Form onSubmit={handleFileUpload}>
+                <Input type="file" onChange={handleFileChange} />
+                <Button type="submit">Upload File</Button>
+            </Form>
+        </CardContainer>
     );
 };
 
