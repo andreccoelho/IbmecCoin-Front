@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { Link, useNavigate } from 'react-router-dom';
 
-const ConvitesContainer = styled.div`
+const ConvitesContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -22,7 +23,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const Section = styled.div`
+const Section = styled(motion.div)`
   background-color: #f7f7f7;
   padding: 1em;
   border-radius: 10px;
@@ -35,7 +36,7 @@ const CardContainer = styled.div`
   gap: 1em;
 `;
 
-const Card = styled.div`
+const Card = styled(motion.div)`
   background-color: white;
   padding: 1em;
   border-radius: 10px;
@@ -50,7 +51,7 @@ const CardItem = styled.div`
   font-size: 1em;
 `;
 
-const CardButton = styled.button`
+const CardButton = styled(motion.button)`
   padding: 0.8em 1em;
   border-radius: 5px;
   background-color: var(--primaria);
@@ -66,7 +67,7 @@ const CardButton = styled.button`
   }
 `;
 
-const Message = styled.p`
+const Message = styled(motion.p)`
   color: ${props => (props.type === 'error' ? 'red' : 'green')};
   margin: 0.5em 0;
 `;
@@ -137,24 +138,57 @@ const Convites = () => {
 
     return (
         <Base>
-            <ConvitesContainer>
-                {error && <Message type="error">{error}</Message>}
-                <Header>
+            <ConvitesContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>CONVITES</h1>
                 </Header>
 
-                <Section>
+                <Section
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <h2>Lista de convites</h2>
                     {convites.length === 0 ? (
                         <Message>Não há convites pendentes</Message>
                     ) : (
                         <CardContainer>
                             {convites.map((convite) => (
-                                <Card key={convite.id_convite}>
+                                <Card
+                                    key={convite.id_convite}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.6 + (convite.id_convite * 0.1) }}
+                                >
                                     <CardItem><strong>Id:</strong> {convite.id_convite}</CardItem>
                                     <CardItem><strong>Grupo:</strong> {convite.id_grupo}</CardItem>
                                     <CardItem><strong>Convidado:</strong> {convite.convidado_matricula}</CardItem>
-                                    <CardButton onClick={() => handleAcceptInvite(convite.id_convite)}>Aceitar</CardButton>
+                                    <CardButton
+                                        onClick={() => handleAcceptInvite(convite.id_convite)}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.5, delay: 0.8 }}
+                                    >
+                                        Aceitar
+                                    </CardButton>
                                 </Card>
                             ))}
                         </CardContainer>

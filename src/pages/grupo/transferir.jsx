@@ -1,6 +1,73 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { useParams, Link } from 'react-router-dom';
+
+const TransferContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  background-color: #fff;
+  font-family: 'Krub', sans-serif;
+  color: #333;
+`;
+
+const Form = styled(motion.form)`
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 80%;
+  max-width: 400px;
+  background-color: #f7f7f7;
+  padding: 1em;
+  border-radius: 10px;
+`;
+
+const Label = styled.label`
+  margin-bottom: 0.5em;
+  font-weight: bold;
+`;
+
+const Input = styled.input`
+  padding: 0.8em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  width: 100%;
+`;
+
+const Button = styled(motion.button)`
+  padding: 0.8em 1em;
+  border-radius: 5px;
+  background-color: var(--primaria);
+  color: white;
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #3700b3;
+  }
+`;
+
+const Message = styled(motion.p)`
+  color: ${props => (props.type === 'error' ? 'red' : 'green')};
+  margin: 0.5em 0;
+`;
+
+const BackLink = styled(Link)`
+  margin-top: 1em;
+  color: var(--primaria);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 const GrupoTransferir = () => {
     const { destinatario_matricula } = useParams();
@@ -81,32 +148,68 @@ const GrupoTransferir = () => {
 
     return (
         <Base>
-            {error && <p>{error}</p>}
-            {success && <p>{success}</p>}
-            <h1>Transferir IbmecCoins</h1>
-            <p>Saldo atual: {aluno ? aluno.saldo : 'Carregando...'}</p>
-            <form onSubmit={handleTransfer}>
-                <label htmlFor="usuario">Usuário:</label>
-                <input
-                    type="text"
-                    id="usuario"
-                    name="usuario"
-                    value={destinatario}
-                    onChange={(e) => setDestinatario(e.target.value)}
-                    required
-                />
-                <label htmlFor="quantidade">Quantidade:</label>
-                <input
-                    type="number"
-                    id="quantidade"
-                    name="quantidade"
-                    value={quantidade}
-                    onChange={(e) => setQuantidade(e.target.value)}
-                    required
-                />
-                <button type="submit">Transferir</button>
-            </form>
-            <Link to="/">Voltar</Link>
+            <TransferContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                {success && (
+                    <Message
+                        type="success"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {success}
+                    </Message>
+                )}
+                <h1>Transferir IbmecCoins</h1>
+                <p>Saldo atual: {aluno ? aluno.saldo : 'Carregando...'}</p>
+                <Form
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    onSubmit={handleTransfer}
+                >
+                    <Label htmlFor="usuario">Usuário:</Label>
+                    <Input
+                        type="text"
+                        id="usuario"
+                        name="usuario"
+                        value={destinatario}
+                        onChange={(e) => setDestinatario(e.target.value)}
+                        required
+                    />
+                    <Label htmlFor="quantidade">Quantidade:</Label>
+                    <Input
+                        type="number"
+                        id="quantidade"
+                        name="quantidade"
+                        value={quantidade}
+                        onChange={(e) => setQuantidade(e.target.value)}
+                        required
+                    />
+                    <Button
+                        type="submit"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                    >
+                        Transferir
+                    </Button>
+                </Form>
+                <BackLink to="/">Voltar</BackLink>
+            </TransferContainer>
         </Base>
     );
 };

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { Link, useNavigate } from 'react-router-dom';
 
-const GrupoContainer = styled.div`
+const GrupoContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -22,7 +23,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled(motion.div)`
   background-color: #f7f7f7;
   padding: 1em;
   border-radius: 10px;
@@ -54,7 +55,7 @@ const ListItem = styled.li`
   }
 `;
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 0.8em 1em;
   border-radius: 5px;
   background-color: var(--primaria);
@@ -86,8 +87,8 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const Message = styled.p`
-  color: ${props => props.type === 'error' ? 'red' : 'green'};
+const Message = styled(motion.p)`
+  color: ${props => (props.type === 'error' ? 'red' : 'green')};
   margin: 0.5em 0;
 `;
 
@@ -160,22 +161,51 @@ const Grupo = () => {
 
     return (
         <Base>
-            <GrupoContainer>
-                {error && <Message type="error">{error}</Message>}
+            <GrupoContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
                 {grupo ? (
                     <>
-                        <Header>
+                        <Header
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        >
                             <h2>INFORMAÇÃO</h2>
                         </Header>
-                        <InfoContainer>
+                        <InfoContainer
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
                             <InfoItem>Nome: {grupo.nome}</InfoItem>
                             <InfoItem>Descrição: {grupo.descricao}</InfoItem>
                         </InfoContainer>
 
-                        <Header>
+                        <Header
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
                             <h2>MEMBROS</h2>
                         </Header>
-                        <InfoContainer>
+                        <InfoContainer
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
                             {grupo.membros.length > 0 ? (
                                 <List>
                                     {grupo.membros.map(member => (
@@ -192,7 +222,14 @@ const Grupo = () => {
                             )}
                             <StyledLink to="/saldo/grupo/convidar">Convidar</StyledLink>
                         </InfoContainer>
-                        <Button onClick={handleLeaveGroup}>Sair do grupo</Button>
+                        <Button
+                            onClick={handleLeaveGroup}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                        >
+                            Sair do grupo
+                        </Button>
                     </>
                 ) : (
                     <InfoItem>Loading...</InfoItem>

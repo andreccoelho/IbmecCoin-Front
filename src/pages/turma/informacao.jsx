@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 
-const TurmaContainer = styled.div`
+const TurmaContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
     background-color: var(--primaria);
     color: white;
     padding: 1em;
@@ -22,7 +23,7 @@ const Header = styled.div`
     margin-bottom: 1em;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled(motion.div)`
     background-color: #f7f7f7;
     padding: 1em;
     border-radius: 10px;
@@ -34,7 +35,7 @@ const InfoItem = styled.p`
     font-size: 1em;
 `;
 
-const CardContainer = styled.div`
+const CardContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -44,7 +45,7 @@ const CardContainer = styled.div`
     margin-bottom: 1em;
 `;
 
-const Card = styled.div`
+const Card = styled(motion.div)`
     background-color: white;
     padding: 1em;
     border-radius: 10px;
@@ -75,7 +76,7 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const AddAlunoForm = styled.form`
+const AddAlunoForm = styled(motion.form)`
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -92,7 +93,7 @@ const Input = styled.input`
     font-size: 1em;
 `;
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 0.8em 1em;
   border-radius: 5px;
   background-color: var(--primaria);
@@ -178,12 +179,24 @@ const Turma = () => {
 
     return (
         <Base>
-            <TurmaContainer>
+            <TurmaContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <Header>
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>TURMA</h1>
                 </Header>
-                <InfoContainer>
+                <InfoContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <h2>INFORMAÇÕES</h2>
                     {turma ? (
                         <>
@@ -195,11 +208,20 @@ const Turma = () => {
                         <InfoItem>Loading...</InfoItem>
                     )}
                 </InfoContainer>
-                <CardContainer>
+                <CardContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
                     <h2>ALUNOS</h2>
                     {turma && turma.turma.length > 0 ? (
                         turma.turma.map((aluno) => (
-                            <Card key={aluno.matricula}>
+                            <Card
+                                key={aluno.matricula}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 0.8 }}
+                            >
                                 <CardItem><strong>Matrícula:</strong> {aluno.matricula}</CardItem>
                                 <CardItem><strong>Nome:</strong> {aluno.nome}</CardItem>
                                 <CardItem><strong>Saldo:</strong> {aluno.saldo}</CardItem>
@@ -210,7 +232,12 @@ const Turma = () => {
                     )}
                 </CardContainer>
                 {user.tipo === 'professor' && (
-                    <AddAlunoForm onSubmit={handleAddAluno}>
+                    <AddAlunoForm
+                        onSubmit={handleAddAluno}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                    >
                         <h2>ADICIONAR ALUNO</h2>
                         <label htmlFor="matricula_aluno_novo">Matrícula do aluno novo:</label>
                         <Input
@@ -220,7 +247,14 @@ const Turma = () => {
                             value={matricula_aluno_novo}
                             onChange={(e) => setMatriculaAlunoNovo(e.target.value)}
                         />
-                        <Button type="submit">Adicionar</Button>
+                        <Button
+                            type="submit"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                        >
+                            Adicionar
+                        </Button>
                     </AddAlunoForm>
                 )}
                 <StyledLink to="/">Voltar</StyledLink>

@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { Link } from 'react-router-dom';
 
-const BeneficiarContainer = styled.div`
+const BeneficiarContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -22,7 +23,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -39,7 +40,7 @@ const Input = styled.input`
   font-size: 1em;
 `;
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 0.8em 1em;
   border-radius: 5px;
   background-color: var(--primaria);
@@ -54,7 +55,7 @@ const Button = styled.button`
   }
 `;
 
-const Message = styled.p`
+const Message = styled(motion.p)`
   color: ${props => (props.type === 'error' ? 'red' : 'green')};
   margin: 0.5em 0;
 `;
@@ -69,7 +70,7 @@ const CardContainer = styled.div`
   margin-bottom: 1em;
 `;
 
-const Card = styled.div`
+const Card = styled(motion.div)`
   background-color: white;
   padding: 1em;
   border-radius: 10px;
@@ -160,13 +161,44 @@ const BeneficiarIbmecCoins = () => {
 
     return (
         <Base>
-            <BeneficiarContainer>
-                {error && <Message type="error">{error}</Message>}
-                {success && <Message type="success">{success}</Message>}
-                <Header>
+            <BeneficiarContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                {success && (
+                    <Message
+                        type="success"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {success}
+                    </Message>
+                )}
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>Beneficiar IbmecCoins</h1>
                 </Header>
-                <Form onSubmit={handleTransfer}>
+                <Form
+                    onSubmit={handleTransfer}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <label htmlFor="usuario">Usuário:</label>
                     <Input
                         type="text"
@@ -185,15 +217,31 @@ const BeneficiarIbmecCoins = () => {
                         onChange={(e) => setQuantidade(e.target.value)}
                         required
                     />
-                    <Button type="submit">Transferir</Button>
+                    <Button
+                        type="submit"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                    >
+                        Transferir
+                    </Button>
                 </Form>
 
-                <Header>
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>Alunos</h1>
                 </Header>
                 <CardContainer>
                     {alunos.map((aluno) => (
-                        <Card key={aluno.matricula}>
+                        <Card
+                            key={aluno.matricula}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 + aluno.matricula * 0.1 }}
+                        >
                             <CardItem><strong>Matrícula:</strong> {aluno.matricula}</CardItem>
                             <CardItem><strong>Nome:</strong> {aluno.nome}</CardItem>
                             <CardItem><strong>Email:</strong> {aluno.email}</CardItem>

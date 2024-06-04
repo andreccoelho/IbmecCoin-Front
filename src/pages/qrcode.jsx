@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Base from './Base';
 import QrcodeLeitor from './qrcode/leitor';
 
-const QrcodeContainer = styled.div`
+const QrcodeContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -23,7 +24,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const Section = styled.div`
+const Section = styled(motion.div)`
   background-color: #f7f7f7;
   padding: 1em;
   border-radius: 10px;
@@ -79,17 +80,31 @@ const Qrcode = () => {
 
     return (
         <Base>
-            <QrcodeContainer>
-                <Header>
+            <QrcodeContainer
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>QR Code</h1>
                 </Header>
 
                 {userType === 'aluno' ? (
-                    <>
-                        <QrcodeLeitor />
-                    </>
+                    <QrcodeLeitor 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    />
                 ) : (
-                    <Section>
+                    <Section
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                    >
                         <SectionTitle>QRCODE</SectionTitle>
                         <StyledLink to="/qrcode/criar">Gerar QR Code</StyledLink>
                         <StyledLink to="/qrcode/foto/last">Ver último QR Code gerado</StyledLink>

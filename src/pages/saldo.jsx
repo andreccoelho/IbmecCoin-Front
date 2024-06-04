@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Base from './Base';
 import Grupo from './grupo/informacao';
 
-const SaldoContainer = styled.div`
+const SaldoContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -23,7 +24,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const Section = styled.div`
+const Section = styled(motion.div)`
   background-color: #f7f7f7;
   padding: 1em;
   border-radius: 10px;
@@ -111,20 +112,36 @@ const Saldo = () => {
 
     return (
         <Base>
-            <SaldoContainer>
-                <Header>
+            <SaldoContainer
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>Saldo</h1>
                 </Header>
                 {error && <Message type="error">{error}</Message>}
 
                 {userType === 'aluno' ? (
                     <>
-                        <Section>
+                        <Section
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
                             <SectionTitle>HISTÓRICO</SectionTitle>
                             <StyledLink to="/saldo/historico">Ver histórico</StyledLink>
                         </Section>
 
-                        <Section>
+                        <Section
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
                             <SectionTitle>GRUPO</SectionTitle>
                             {aluno && aluno.id_grupo ? (
                                 <Grupo />
@@ -138,15 +155,27 @@ const Saldo = () => {
                     </>
                 ) : (
                     <>
-                        <Section>
+                        <Section
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
                             <SectionTitle>PONTUAR</SectionTitle>
                             <StyledLink to="/saldo/beneficiar">Beneficiar aluno</StyledLink>
                         </Section>
-                        <Section>
+                        <Section
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
                             <SectionTitle>HISTÓRICO</SectionTitle>
                             <StyledLink to="/saldo/transacoes">Ver transações</StyledLink>
                         </Section>
-                        <Section>
+                        <Section
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
+                        >
                             <SectionTitle>GRUPOS</SectionTitle>
                             <StyledLink to="/saldo/grupos">Ver grupos</StyledLink>
                         </Section>

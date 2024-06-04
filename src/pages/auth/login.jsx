@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 
-const LoginContainer = styled.div`
+const LoginContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
   color: var(--primaria);
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
 `;
 
-const Title = styled.h2`
+const Title = styled(motion.h2)`
   font-size: 2em;
   margin-bottom: 1em;
 `;
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +27,7 @@ const Form = styled.form`
   max-width: 300px;
 `;
 
-const FormGroup = styled.div`
+const FormGroup = styled(motion.div)`
   display: flex;
   flex-direction: column;
   margin-bottom: 1em;
@@ -46,12 +47,12 @@ const Input = styled.input`
   width: 100%;
 `;
 
-const Error = styled.div`
+const Error = styled(motion.div)`
   color: red;
   margin-bottom: 1em;
 `;
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 0.8em 1em;
   border: none;
   border-radius: 5px;
@@ -100,8 +101,18 @@ const AuthLogin = () => {
 
     return (
         <Base>
-            <LoginContainer>
-                <Title>Login</Title>
+            <LoginContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Title
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                    Login
+                </Title>
                 <LoginForm
                     matricula={matricula}
                     senha={senha}
@@ -117,7 +128,12 @@ const AuthLogin = () => {
 
 const LoginForm = ({ matricula, senha, setMatricula, setSenha, handleSubmit, error }) => {
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            onSubmit={handleSubmit}
+        >
             <FormGroup>
                 <Label htmlFor="matricula">Matricula</Label>
                 <Input
@@ -140,8 +156,23 @@ const LoginForm = ({ matricula, senha, setMatricula, setSenha, handleSubmit, err
                     required
                 />
             </FormGroup>
-            {error && <Error>{error}</Error>}
-            <Button type="submit">Login</Button>
+            {error && (
+                <Error
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                    {error}
+                </Error>
+            )}
+            <Button
+                type="submit"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+            >
+                Login
+            </Button>
         </Form>
     );
 };

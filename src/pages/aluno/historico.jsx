@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 
-const HistoricoContainer = styled.div`
+const HistoricoContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
     background-color: var(--primaria);
     color: white;
     padding: 1em;
@@ -21,14 +22,14 @@ const Header = styled.div`
     margin-bottom: 1em;
 `;
 
-const Section = styled.div`
+const Section = styled(motion.div)`
     background-color: #f7f7f7;
     padding: 1em;
     border-radius: 10px;
     margin-bottom: 1em;
 `;
 
-const Card = styled.div`
+const Card = styled(motion.div)`
     background-color: white;
     padding: 1em;
     border-radius: 10px;
@@ -91,16 +92,33 @@ const AlunoHistorico = () => {
 
     return (
         <Base>
-            <HistoricoContainer>
+            <HistoricoContainer
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
                 {error && <Message type="error">{error}</Message>}
-                <Header>
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>HISTÓRICO DO ALUNO</h1>
                 </Header>
 
-                <Section>
+                <Section
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <h2>LISTA DE TRANSAÇÕES</h2>
                     {transacoes.map((transacao, index) => (
-                        <Card key={index}>
+                        <Card
+                            key={index}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
+                        >
                             <CardItem><strong>Data:</strong> {transacao.data}</CardItem>
                             <CardItem><strong>Valor:</strong> {transacao.valor}</CardItem>
                             <CardItem><strong>Emissor:</strong> {transacao.emissor_id}</CardItem>

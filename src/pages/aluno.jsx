@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from './Base';
 import Logout from '../components/Logout';
-import {CardContainer} from "./loja/loja";
+import { CardContainer } from './loja/loja';
 
-const AlunoContainer = styled.div`
+const AlunoContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -41,7 +42,7 @@ const Balance = styled.h1`
     margin: 0;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled(motion.div)`
     background-color: #f7f7f7;
     padding: 1em;
     border-radius: 10px;
@@ -89,7 +90,7 @@ const LogoutButton = styled.button`
     cursor: pointer;
     transition: background 0.3s ease;
     
-    button{
+    button {
         background-color: #e0e0e0;
         font-size: 1.5em;
         color: #333;
@@ -147,15 +148,31 @@ const Aluno = () => {
     }
 
     return (
-        <CardContainer>
-            <Header>
+        <CardContainer
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <Header
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
                 <Name>Aluno: {aluno ? aluno.nome : 'Loading...'}</Name>
             </Header>
-            <AlunoContainer>
+            <AlunoContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+            >
                 <BalanceContainer>
                     <Balance>{aluno ? `${aluno.saldo} IC` : 'Loading...'}</Balance>
                 </BalanceContainer>
-                <InfoContainer>
+                <InfoContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
                     <h2>INFORMAÇÕES</h2>
                     {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
                     <InfoItem>Matrícula: {aluno ? aluno.matricula : 'Loading...'}</InfoItem>

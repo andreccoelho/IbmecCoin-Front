@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { Link, useNavigate } from 'react-router-dom';
 
-const LojaContainer = styled.div`
+const LojaContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
     background-color: var(--primaria);
     color: white;
     padding: 1em;
@@ -32,9 +33,9 @@ const CardContainer = styled.div`
     margin-bottom: 1em;
 `;
 
-export {CardContainer};
+export { CardContainer };
 
-const Card = styled.div`
+const Card = styled(motion.div)`
     background-color: white;
     padding: 1em;
     border-radius: 10px;
@@ -58,7 +59,7 @@ const CardItem = styled.div`
     }
 `;
 
-const CardButton = styled.button`
+const CardButton = styled(motion.button)`
     padding: 0.8em 1em;
     border-radius: 5px;
     background-color: var(--primaria);
@@ -74,7 +75,7 @@ const CardButton = styled.button`
     }
 `;
 
-const Form = styled.form`
+const Form = styled(motion.form)`
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -91,24 +92,24 @@ const Input = styled.input`
     font-size: 1em;
 `;
 
-const Button = styled.button`
-  padding: 0.8em 1em;
-  border-radius: 5px;
-  background-color: var(--primaria);
-  color: white;
-  font-size: 1em;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
+const Button = styled(motion.button)`
+    padding: 0.8em 1em;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
 
-  &:hover {
-    background-color: #3700b3;
-  }
+    &:hover {
+        background-color: #3700b3;
+    }
 `;
 
-const Message = styled.p`
-  color: ${props => (props.type === 'error' ? 'red' : 'green')};
-  margin: 0.5em 0;
+const Message = styled(motion.p)`
+    color: ${props => (props.type === 'error' ? 'red' : 'green')};
+    margin: 0.5em 0;
 `;
 
 const LojaItens = () => {
@@ -240,24 +241,63 @@ const LojaItens = () => {
 
     return (
         <Base>
-            <LojaContainer>
-                {error && <Message type="error">{error}</Message>}
-                {success && <Message type="success">{success}</Message>}
-                <Header>
+            <LojaContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{                        opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                {success && (
+                    <Message
+                        type="success"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {success}
+                    </Message>
+                )}
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>Loja</h1>
                 </Header>
 
                 {aluno && (
-                    <CardContainer>
+                    <CardContainer
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
                         <h2>SALDO</h2>
                         <p>Seu saldo é de IbmecCoins {aluno.saldo}</p>
                     </CardContainer>
                 )}
 
-                <CardContainer>
+                <CardContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <h2>ITENS</h2>
                     {itens.map((item) => (
-                        <Card key={item.id_item}>
+                        <Card
+                            key={item.id_item}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 + item.id_item * 0.1 }}
+                        >
                             <CardItem>
                                 <strong>Nome:</strong> <Link to={`/loja/item/${item.id_item}`}>{item.nome}</Link>
                             </CardItem>
@@ -265,14 +305,26 @@ const LojaItens = () => {
                                 <strong>Preço:</strong> {item.valor}
                             </CardItem>
                             {userType === 'aluno' && (
-                                <CardButton onClick={() => handleBuyItem(item.id_item)}>Comprar</CardButton>
+                                <CardButton
+                                    onClick={() => handleBuyItem(item.id_item)}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.8 }}
+                                >
+                                    Comprar
+                                </CardButton>
                             )}
                         </Card>
                     ))}
                 </CardContainer>
 
                 {userType === 'professor' && (
-                    <Form onSubmit={handleAddItem}>
+                    <Form
+                        onSubmit={handleAddItem}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
                         <h2>ADICIONAR ITEM</h2>
                         <label htmlFor="nome">Nome:</label>
                         <Input
@@ -292,7 +344,14 @@ const LojaItens = () => {
                             onChange={(e) => setValor(e.target.value)}
                             required
                         />
-                        <Button type="submit">Adicionar</Button>
+                        <Button
+                            type="submit"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
+                            Adicionar
+                        </Button>
                     </Form>
                 )}
             </LojaContainer>
@@ -301,3 +360,4 @@ const LojaItens = () => {
 };
 
 export default LojaItens;
+
