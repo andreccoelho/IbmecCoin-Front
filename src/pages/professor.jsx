@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from './Base';
 import { logoutUser } from '../util/auth';
-import ProfessorLogin from '../components/Logout';
+import Logout from '../components/Logout';
 
-const ProfessorContainer = styled.div`
+const ProfessorContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -30,7 +31,7 @@ const Name = styled.h2`
     margin: 0;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled(motion.div)`
     background-color: #f7f7f7;
     padding: 1em;
     border-radius: 10px;
@@ -42,7 +43,7 @@ const InfoItem = styled.p`
     font-size: 1em;
 `;
 
-const CardContainer = styled.div`
+const CardContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -68,38 +69,46 @@ const CardItem = styled.div`
 `;
 
 const CardButton = styled(Link)`
-  padding: 0.8em 1em;
-  border-radius: 5px;
-  background-color: var(--primaria);
-  color: white;
-  font-size: 1em;
-  border: none;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  margin-top: 1em;
+    padding: 0.8em 1em;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1em;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 1em;
 
-  &:hover {
-    background-color: #3700b3;
-  }
+    &:hover {
+        background-color: #3700b3;
+    }
 `;
 
 const StyledLink = styled(Link)`
-  display: inline-block;
-  text-align: center;
-  padding: 0.8em 1em;
-  border-radius: 5px;
-  background-color: var(--primaria);
-  color: white;
-  font-size: 1.5em;
-  text-decoration: none;
-  transition: background 0.3s ease;
-  margin-top: 1em;
+    display: inline-block;
+    text-align: center;
+    padding: 0.8em 1em;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1.5em;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-top: 1em;
 
-  &:hover {
-    background-color: #3700b3;
-  }
+    button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 1em;
+        cursor: pointer;
+    }
+
+    &:hover {
+        background-color: #3700b3;
+    }
 `;
 
 const Professor = () => {
@@ -148,37 +157,59 @@ const Professor = () => {
     }
 
     return (
-        <Base>
-            <ProfessorContainer>
-                <Header>
+        <>
+            <CardContainer
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <Name>Professor: {professor ? professor.nome : 'Loading...'}</Name>
                 </Header>
-                <InfoContainer>
+                <InfoContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
                     <h2>INFORMAÇÕES</h2>
                     {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
                     <InfoItem>Matrícula: {professor ? professor.matricula : 'Loading...'}</InfoItem>
                     <InfoItem>Email: {professor ? professor.email : 'Loading...'}</InfoItem>
                 </InfoContainer>
-                <CardContainer>
-                    <h2>TURMAS</h2>
-                    {turmas.length > 0 ? (
-                        turmas.map((turma) => (
-                            <Card key={turma.id_turma}>
-                                <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
-                                <CardItem><strong>Quantidade alunos:</strong> {turma.turma.length}</CardItem>
-                                <CardButton to={`/perfil/turma/${turma.id_turma}`}>Acessar</CardButton>
-                            </Card>
-                        ))
-                    ) : (
-                        <h3>Não há turmas disponíveis</h3>
-                    )}
-                    <StyledLink to="/perfil/turma/criar">Criar turma</StyledLink>
-                </CardContainer>
+            </CardContainer>
+            <CardContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+            >
+                <h2>TURMAS</h2>
+                {turmas.length > 0 ? (
+                    turmas.map((turma) => (
+                        <Card key={turma.id_turma}>
+                            <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
+                            <CardItem><strong>Quantidade alunos:</strong> {turma.turma.length}</CardItem>
+                            <CardButton to={`/perfil/turma/${turma.id_turma}`}>Acessar</CardButton>
+                        </Card>
+                    ))
+                ) : (
+                    <h3>Não há turmas disponíveis</h3>
+                )}
+                <StyledLink to="/perfil/turma/criar">Criar turma</StyledLink>
+            </CardContainer>
+            <CardContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+            >
                 <StyledLink as="div">
-                    <ProfessorLogin />
+                    <Logout />
                 </StyledLink>
-            </ProfessorContainer>
-        </Base>
+            </CardContainer>
+        </>
     );
 };
 

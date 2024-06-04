@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 
-const RegisterContainer = styled.div`
+const RegisterContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: var(--primaria);
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   padding: 2em;
   background-color: #fff;
 `;
 
-const Title = styled.h2`
+const Title = styled(motion.h2)`
   font-size: 2em;
   margin-bottom: 1em;
 `;
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +28,7 @@ const Form = styled.form`
   max-width: 400px;
 `;
 
-const FormGroup = styled.div`
+const FormGroup = styled(motion.div)`
   display: flex;
   flex-direction: column;
   margin-bottom: 1em;
@@ -55,17 +56,17 @@ const Select = styled.select`
   width: 100%;
 `;
 
-const Error = styled.div`
+const Error = styled(motion.div)`
   color: red;
   margin-bottom: 1em;
 `;
 
-const Success = styled.div`
+const Success = styled(motion.div)`
   color: green;
   margin-bottom: 1em;
 `;
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 0.8em 1em;
   border: none;
   border-radius: 5px;
@@ -126,11 +127,42 @@ const Registrar = () => {
 
     return (
         <Base>
-            <RegisterContainer>
-                <Title>Registrar</Title>
-                {error && <Error>{error}</Error>}
-                {success && <Success>{success}</Success>}
-                <Form onSubmit={handleRegister}>
+            <RegisterContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Title
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
+                    Registrar
+                </Title>
+                {error && (
+                    <Error
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        {error}
+                    </Error>
+                )}
+                {success && (
+                    <Success
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        {success}
+                    </Success>
+                )}
+                <Form
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    onSubmit={handleRegister}
+                >
                     <FormGroup>
                         <Label htmlFor="nome">Nome</Label>
                         <Input
@@ -187,7 +219,14 @@ const Registrar = () => {
                             <option value="professor">Professor</option>
                         </Select>
                     </FormGroup>
-                    <Button type="submit">Registrar</Button>
+                    <Button
+                        type="submit"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                    >
+                        Registrar
+                    </Button>
                 </Form>
             </RegisterContainer>
         </Base>

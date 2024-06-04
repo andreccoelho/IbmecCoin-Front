@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from './Base';
-import ProfessorLogin from '../components/Logout';
+import Logout from '../components/Logout';
+import { CardContainer } from './loja/loja';
 
-const AlunoContainer = styled.div`
+const AlunoContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
     background-color: #fff;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
     color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,7 +42,7 @@ const Balance = styled.h1`
     margin: 0;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled(motion.div)`
     background-color: #f7f7f7;
     padding: 1em;
     border-radius: 10px;
@@ -87,6 +89,15 @@ const LogoutButton = styled.button`
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
+    
+    button {
+        background-color: #e0e0e0;
+        font-size: 1.5em;
+        color: #333;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
 
     &:hover {
         background-color: #bdbdbd;
@@ -137,15 +148,31 @@ const Aluno = () => {
     }
 
     return (
-        <Base>
-            <AlunoContainer>
-                <Header>
-                    <Name>Aluno: {aluno ? aluno.nome : 'Loading...'}</Name>
-                </Header>
+        <CardContainer
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <Header
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <Name>Aluno: {aluno ? aluno.nome : 'Loading...'}</Name>
+            </Header>
+            <AlunoContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+            >
                 <BalanceContainer>
                     <Balance>{aluno ? `${aluno.saldo} IC` : 'Loading...'}</Balance>
                 </BalanceContainer>
-                <InfoContainer>
+                <InfoContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
                     <h2>INFORMAÇÕES</h2>
                     {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
                     <InfoItem>Matrícula: {aluno ? aluno.matricula : 'Loading...'}</InfoItem>
@@ -153,18 +180,18 @@ const Aluno = () => {
                     <InfoItem>Tipo: {aluno ? aluno.tipo : 'Loading...'}</InfoItem>
                     <InfoItem>Grupo: {aluno ? aluno.id_grupo : 'Loading...'}</InfoItem>
                 </InfoContainer>
-                <ButtonContainer>
-                    {aluno && !aluno.id_turma ? (
-                        <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
-                    ) : (
-                        <StyledLink to={`/perfil/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</StyledLink>
-                    )}
-                    <LogoutButton>
-                        <ProfessorLogin />
-                    </LogoutButton>
-                </ButtonContainer>
             </AlunoContainer>
-        </Base>
+            <ButtonContainer>
+                {aluno && !aluno.id_turma ? (
+                    <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
+                ) : (
+                    <StyledLink to={`/perfil/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</StyledLink>
+                )}
+                <LogoutButton>
+                    <Logout />
+                </LogoutButton>
+            </ButtonContainer>
+        </CardContainer>
     );
 };
 

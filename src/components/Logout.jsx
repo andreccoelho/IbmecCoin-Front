@@ -2,14 +2,14 @@ import React from 'react';
 import useLogout from "../util/auth";
 
 
-const ProfessorLogin = () => {
+const Logout = () => {
     const logoutUser = useLogout();
 
     return (
-        <div className="professor-login">
-            <button onClick={logoutUser}>DESLOGAR</button>
-        </div>
+        <>
+            <button onClick={logoutUser}>Deslogar</button>
+        </>
     );
 };
 
-export default ProfessorLogin;
+export default Logout;

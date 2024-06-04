@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 
-const TransacoesContainer = styled.div`
+const TransacoesContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -21,7 +22,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const Message = styled.p`
+const Message = styled(motion.p)`
   color: ${props => (props.type === 'error' ? 'red' : 'green')};
   margin: 0.5em 0;
 `;
@@ -36,7 +37,7 @@ const CardContainer = styled.div`
   margin-bottom: 1em;
 `;
 
-const Card = styled.div`
+const Card = styled(motion.div)`
   background-color: white;
   padding: 1em;
   border-radius: 10px;
@@ -82,14 +83,36 @@ const ProfessorTransacoes = () => {
 
     return (
         <Base>
-            <TransacoesContainer>
-                {error && <Message type="error">{error}</Message>}
-                <Header>
+            <TransacoesContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>Transações</h1>
                 </Header>
                 <CardContainer>
                     {transacoes.map((transacao, index) => (
-                        <Card key={index}>
+                        <Card
+                            key={index}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                        >
                             <CardItem><strong>Emissor:</strong> {transacao.emissor_id}</CardItem>
                             <CardItem><strong>Receptor:</strong> {transacao.receptor_id}</CardItem>
                             <CardItem><strong>Valor:</strong> {transacao.valor}</CardItem>

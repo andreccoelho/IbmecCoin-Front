@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from './Base';
 
-const IndexStyle = styled.div`
+const IndexStyle = styled(motion.div)`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--primaria);
-    font-family: 'Arial', sans-serif;
+    font-family: 'Krub', sans-serif;
 `;
 
-const Title = styled.h1`
+const Title = styled(motion.h1)`
     font-size: 2.5em;
     margin-bottom: 1em;
 `;
 
-const Subtitle = styled.p`
+const Subtitle = styled(motion.p)`
     font-size: 1em;
     margin-bottom: 2em;
     text-align: center;
 `;
 
-const ButtonContainer = styled.div`
+const ButtonContainer = styled(motion.div)`
     display: flex;
     flex-direction: column;
     gap: 1em;
@@ -53,7 +54,7 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const ImgContainer = styled.div`
+const ImgContainer = styled(motion.div)`
     display: flex;
     justify-content: center;
     margin-bottom: 2em;
@@ -89,13 +90,37 @@ const Index = () => {
 
     return (
         <Base>
-            <IndexStyle>
-                <ImgContainer>
+            <IndexStyle
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <ImgContainer
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <Img src="/imagens/ibmec.png" alt="decorative" />
                 </ImgContainer>
-                <Title>Ibmec Coin</Title>
-                <Subtitle>Simplificando suas transações educacionais na faculdade.</Subtitle>
-                <ButtonContainer>
+                <Title
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                    Ibmec Coin
+                </Title>
+                <Subtitle
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
+                    Conectando esforço acadêmico a recompensas exclusivas.
+                </Subtitle>
+                <ButtonContainer
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                >
                     <StyledLink to="/auth/login">Login</StyledLink>
                     <StyledLink to="/auth/registro">Registrar</StyledLink>
                 </ButtonContainer>

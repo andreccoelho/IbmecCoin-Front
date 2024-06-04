@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { useNavigate } from "react-router-dom";
 
-const CriarTurmaContainer = styled.div`
+const CriarTurmaContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -22,7 +23,7 @@ const Header = styled.div`
   margin-bottom: 1em;
 `;
 
-const Form = styled.form`
+const Form = styled(motion.form)`
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -39,7 +40,7 @@ const Input = styled.input`
   font-size: 1em;
 `;
 
-const Button = styled.button`
+const Button = styled(motion.button)`
   padding: 0.8em 1em;
   border-radius: 5px;
   background-color: var(--primaria);
@@ -54,7 +55,7 @@ const Button = styled.button`
   }
 `;
 
-const Message = styled.p`
+const Message = styled(motion.p)`
   color: ${props => (props.type === 'error' ? 'red' : 'green')};
   margin: 0.5em 0;
 `;
@@ -103,13 +104,44 @@ const CriarTurma = () => {
 
     return (
         <Base>
-            <CriarTurmaContainer>
-                <Header>
+            <CriarTurmaContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>CRIAR TURMA</h1>
                 </Header>
-                {error && <Message type="error">{error}</Message>}
-                {success && <Message type="success">{success}</Message>}
-                <Form onSubmit={handleCreateTurma}>
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                {success && (
+                    <Message
+                        type="success"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        {success}
+                    </Message>
+                )}
+                <Form
+                    onSubmit={handleCreateTurma}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 }}
+                >
                     <label htmlFor="nome">Nome da Turma</label>
                     <Input
                         type="text"
@@ -119,7 +151,14 @@ const CriarTurma = () => {
                         onChange={(e) => setNome(e.target.value)}
                         required
                     />
-                    <Button type="submit">Criar</Button>
+                    <Button
+                        type="submit"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.8 }}
+                    >
+                        Criar
+                    </Button>
                 </Form>
             </CriarTurmaContainer>
         </Base>

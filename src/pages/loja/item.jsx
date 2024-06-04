@@ -1,6 +1,49 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { ClipLoader } from 'react-spinners';
 import Base from '../Base';
 import { useParams } from 'react-router-dom';
+
+const ItemContainer = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+  background-color: #fff;
+  font-family: 'Krub', sans-serif;
+  color: #333;
+`;
+
+const Title = styled(motion.h1)`
+  font-size: 2em;
+  margin-bottom: 1em;
+`;
+
+const Price = styled.p`
+  font-size: 1.2em;
+  margin-bottom: 1em;
+`;
+
+const Button = styled(motion.button)`
+  padding: 0.8em 1em;
+  border-radius: 5px;
+  background-color: var(--primaria);
+  color: white;
+  font-size: 1em;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #3700b3;
+  }
+`;
+
+const Message = styled(motion.p)`
+  color: ${props => (props.type === 'error' ? 'red' : 'green')};
+  margin: 0.5em 0;
+`;
 
 const ItemDetalhe = () => {
     const { id_item } = useParams();
@@ -10,6 +53,7 @@ const ItemDetalhe = () => {
     const [item, setItem] = useState(null);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchItem = async () => {
@@ -37,6 +81,7 @@ const ItemDetalhe = () => {
     }, [id_item]);
 
     const handleBuyItem = async () => {
+        setLoading(true);
         try {
             const response = await fetch(`http://localhost:5000/loja/comprar`, {
                 method: 'POST',
@@ -55,22 +100,68 @@ const ItemDetalhe = () => {
         } catch (error) {
             console.error('Error buying item:', error);
             setError('An error occurred. Please try again.');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <Base>
-            {error && <p>{error}</p>}
-            {success && <p>{success}</p>}
-            {item ? (
-                <>
-                    <h1>ITEM: {item.nome}</h1>
-                    <p>Preço: {item.valor}</p>
-                    <button onClick={handleBuyItem}>Comprar</button>
-                </>
-            ) : (
-                <p>Loading...</p>
-            )}
+            <ItemContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                {success && (
+                    <Message
+                        type="success"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {success}
+                    </Message>
+                )}
+                {item ? (
+                    <>
+                        <Title
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                        >
+                            ITEM: {item.nome}
+                        </Title>
+                        <Price>Preço: {item.valor}</Price>
+                        <Button
+                            onClick={handleBuyItem}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            disabled={loading}
+                        >
+                            {loading ? <ClipLoader color="#fff" size={20} /> : 'Comprar'}
+                        </Button>
+                    </>
+                ) : (
+                    <Message
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        Carregando...
+                    </Message>
+                )}
+            </ItemContainer>
         </Base>
     );
 };

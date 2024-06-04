@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 import Base from '../Base';
 import { useParams } from 'react-router-dom';
 
-const QrcodeFotoContainer = styled.div`
+const QrcodeFotoContainer = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Krub', sans-serif;
   color: #333;
 `;
 
-const Header = styled.div`
+const Header = styled(motion.div)`
   background-color: var(--primaria);
   color: white;
   padding: 1em;
@@ -24,7 +25,7 @@ const Header = styled.div`
   width: 100%;
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled(motion.div)`
   margin-top: 1em;
   text-align: center;
   img {
@@ -35,13 +36,13 @@ const ImageContainer = styled.div`
   }
 `;
 
-const TokenContainer = styled.div`
+const TokenContainer = styled(motion.div)`
   margin-top: 1em;
   font-size: 1.2em;
   font-weight: bold;
 `;
 
-const Message = styled.p`
+const Message = styled(motion.p)`
   color: ${props => (props.type === 'error' ? 'red' : 'green')};
   margin: 0.5em 0;
 `;
@@ -82,18 +83,47 @@ const QrcodeFoto = () => {
 
     return (
         <Base>
-            <QrcodeFotoContainer>
-                {error && <Message type="error">{error}</Message>}
-                <Header>
+            <QrcodeFotoContainer
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                {error && (
+                    <Message
+                        type="error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                    >
+                        {error}
+                    </Message>
+                )}
+                <Header
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                >
                     <h1>QR Code Foto</h1>
                 </Header>
                 {img && (
-                    <ImageContainer>
+                    <ImageContainer
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
                         <div>FOTO:</div>
                         <img src={img} alt="QR Code" />
                     </ImageContainer>
                 )}
-                {qrcode_token && <TokenContainer>TOKEN: {qrcode_token}</TokenContainer>}
+                {qrcode_token && (
+                    <TokenContainer
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        TOKEN: {qrcode_token}
+                    </TokenContainer>
+                )}
             </QrcodeFotoContainer>
         </Base>
     );
