@@ -10,7 +10,7 @@ const QrcodeFotoContainer = styled.div`
   align-items: center;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+    font-family: Krub, sans-serif;
   color: #333;
 `;
 

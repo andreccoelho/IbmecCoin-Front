@@ -9,7 +9,7 @@ const RegisterContainer = styled.div`
   align-items: center;
   justify-content: center;
   color: var(--primaria);
-  font-family: 'Arial', sans-serif;
+    font-family: Krub, sans-serif;
   padding: 2em;
   background-color: #fff;
 `;

@@ -10,7 +10,7 @@ const LoginContainer = styled.div`
   justify-content: center;
   height: 100vh;
   color: var(--primaria);
-  font-family: 'Arial', sans-serif;
+    font-family: Krub, sans-serif;
 `;
 
 const Title = styled.h2`

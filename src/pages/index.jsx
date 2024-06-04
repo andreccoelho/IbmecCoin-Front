@@ -9,7 +9,7 @@ const IndexStyle = styled.div`
     align-items: center;
     justify-content: center;
     color: var(--primaria);
-    font-family: 'Arial', sans-serif;
+      font-family: Krub, sans-serif;
 `;
 
 const Title = styled.h1`

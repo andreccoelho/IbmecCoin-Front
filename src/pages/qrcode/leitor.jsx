@@ -8,7 +8,7 @@ const QrcodeContainer = styled.div`
   justify-content: space-between;
   padding: 1em;
   background-color: #fff;
-  font-family: 'Arial', sans-serif;
+    font-family: Krub, sans-serif;
   color: #333;
 `;
 
