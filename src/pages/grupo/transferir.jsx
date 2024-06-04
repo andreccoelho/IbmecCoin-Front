@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Base from '../Base';
 import { useParams, Link } from 'react-router-dom';
+import {CardContainer, Header} from "../loja/loja";
 
 const TransferContainer = styled(motion.div)`
   display: flex;
@@ -36,7 +37,6 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
-  width: 100%;
 `;
 
 const Button = styled(motion.button)`
@@ -173,42 +173,53 @@ const GrupoTransferir = () => {
                         {success}
                     </Message>
                 )}
-                <h1>Transferir IbmecCoins</h1>
-                <p>Saldo atual: {aluno ? aluno.saldo : 'Carregando...'}</p>
-                <Form
+                <Header
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    onSubmit={handleTransfer}
-                >
-                    <Label htmlFor="usuario">Usuário:</Label>
-                    <Input
-                        type="text"
-                        id="usuario"
-                        name="usuario"
-                        value={destinatario}
-                        onChange={(e) => setDestinatario(e.target.value)}
-                        required
-                    />
-                    <Label htmlFor="quantidade">Quantidade:</Label>
-                    <Input
-                        type="number"
-                        id="quantidade"
-                        name="quantidade"
-                        value={quantidade}
-                        onChange={(e) => setQuantidade(e.target.value)}
-                        required
-                    />
-                    <Button
-                        type="submit"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.6 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                        Transferir
-                    </Button>
-                </Form>
-                <BackLink to="/">Voltar</BackLink>
+                    <h1>Transferir IbmecCoins</h1>
+                </Header>
+                <CardContainer
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    transition={{duration: 0.5, delay: 0.4}}
+                >
+                    <p>Saldo atual: {aluno ? aluno.saldo : 'Carregando...'}</p>
+                    <Form
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        transition={{duration: 0.5, delay: 0.4}}
+                        onSubmit={handleTransfer}
+                    >
+                        <Label htmlFor="usuario">Usuário:</Label>
+                        <Input
+                            type="text"
+                            id="usuario"
+                            name="usuario"
+                            value={destinatario}
+                            onChange={(e) => setDestinatario(e.target.value)}
+                            required
+                        />
+                        <Label htmlFor="quantidade">Quantidade:</Label>
+                        <Input
+                            type="number"
+                            id="quantidade"
+                            name="quantidade"
+                            value={quantidade}
+                            onChange={(e) => setQuantidade(e.target.value)}
+                            required
+                        />
+                        <Button
+                            type="submit"
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            transition={{duration: 0.5, delay: 0.6}}
+                        >
+                            Transferir
+                        </Button>
+                    </Form>
+                </CardContainer>
             </TransferContainer>
         </Base>
     );

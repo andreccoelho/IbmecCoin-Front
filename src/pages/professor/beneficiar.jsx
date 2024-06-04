@@ -132,7 +132,7 @@ const BeneficiarIbmecCoins = () => {
         };
 
         fetchAlunos();
-    }, []);
+    }, [alunos]);
 
     const handleTransfer = async (e) => {
         e.preventDefault();
@@ -238,9 +238,6 @@ const BeneficiarIbmecCoins = () => {
                     {alunos.map((aluno) => (
                         <Card
                             key={aluno.matricula}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.4 + aluno.matricula * 0.1 }}
                         >
                             <CardItem><strong>Matrícula:</strong> {aluno.matricula}</CardItem>
                             <CardItem><strong>Nome:</strong> {aluno.nome}</CardItem>

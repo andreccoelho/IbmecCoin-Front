@@ -24,6 +24,8 @@ const Header = styled(motion.div)`
     margin-bottom: 1em;
 `;
 
+export {Header};
+
 const CardContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -188,7 +190,7 @@ const LojaItens = () => {
         }
 
         fetchItens();
-    }, [user, itens]);
+    }, [itens]);
 
     if (isCheckingUser) {
         return <div>Verificando usuário...</div>;

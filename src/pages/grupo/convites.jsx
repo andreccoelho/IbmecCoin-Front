@@ -158,7 +158,7 @@ const Convites = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <h1>CONVITES</h1>
+                    <h1>Convites</h1>
                 </Header>
 
                 <Section

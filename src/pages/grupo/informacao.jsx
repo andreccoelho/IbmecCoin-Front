@@ -143,6 +143,7 @@ const Grupo = () => {
             if (response.ok) {
                 navigate('/saldo');
             } else {
+                navigate('/saldo');
                 setError(data.message);
             }
         } catch (error) {
