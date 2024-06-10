@@ -6,62 +6,66 @@ import Base from './Base';
 import Grupo from './grupo/informacao';
 
 const SaldoContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1em;
-  background-color: #fff;
-  font-family: 'Krub', sans-serif;
-  color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #fff;
+    font-family: 'Krub', sans-serif;
+    color: #333;
 `;
 
 const Header = styled(motion.div)`
-  background-color: var(--primaria);
-  color: white;
-  padding: 1em;
-  border-radius: 10px;
-  text-align: center;
-  margin-bottom: 1em;
+    background-color: var(--primaria);
+    color: white;
+    padding: 1em;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 1em;
 `;
 
 const Section = styled(motion.div)`
-  background-color: #f7f7f7;
-  padding: 1em;
-  border-radius: 10px;
-  margin-bottom: 1em;
+    background-color: #f7f7f7;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
 `;
 
 const SectionTitle = styled.h2`
-  margin: 0;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid #ccc;
+    margin: 0;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid #ccc;
 `;
 
 const StyledLink = styled(Link)`
-  display: inline-block;
-  text-align: center;
-  padding: 0.8em 1em;
-  margin: 0.5em 0;
-  border-radius: 5px;
-  background-color: var(--primaria);
-  color: white;
-  font-size: 1em;
-  text-decoration: none;
-  transition: background 0.3s ease;
+    display: inline-block;
+    text-align: center;
+    padding: 0.8em 1em;
+    margin: 0.5em 0;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1em;
+    text-decoration: none;
+    transition: background 0.3s ease;
 
-  &:hover {
-    background-color: #3700b3;
-  }
+    &:hover {
+        background-color: #3700b3;
+    }
 `;
 
 const Message = styled.p`
-  color: ${props => props.type === 'error' ? 'red' : 'green'};
-  margin: 0.5em 0;
+    color: ${props => props.type === 'error' ? 'red' : 'green'};
+    margin: 0.5em 0;
 `;
 
 const Saldo = () => {
     const [userType, setUserType] = useState(null);
+    const [user, setUser] = useState(null);
+
     const [aluno, setAluno] = useState(null);
+    const [turmas, setTurmas] = useState([]);
+    const [grupos, setGrupos] = useState([]);
     const [error, setError] = useState(null);
     const [isCheckingUser, setIsCheckingUser] = useState(true);
     const navigate = useNavigate();
@@ -71,6 +75,7 @@ const Saldo = () => {
             const user = JSON.parse(localStorage.getItem("user"));
             if (user) {
                 setUserType(user.tipo);
+                setUser(user);
                 if (user.tipo === 'aluno') {
                     fetchAlunoData(user.matricula);
                 }
@@ -94,6 +99,8 @@ const Saldo = () => {
                 const data = await response.json();
                 if (response.ok) {
                     setAluno(data.aluno);
+                    setTurmas(data.turmas);
+                    setGrupos(data.grupos);
                 } else {
                     setError(data.message);
                 }
@@ -105,6 +112,10 @@ const Saldo = () => {
 
         checkUser();
     }, [navigate]);
+
+    const getGrupoByTurma = (turmaId) => {
+        return grupos.find(grupo => grupo.id_turma === turmaId);
+    };
 
     if (isCheckingUser) {
         return <div>Verificando usuário...</div>;
@@ -133,25 +144,31 @@ const Saldo = () => {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.4 }}
                         >
-                            <SectionTitle>HISTÓRICO</SectionTitle>
+                            <SectionTitle>Saldo - {aluno ? aluno.saldo : 'Loading...'} IC</SectionTitle>
+                            <StyledLink to="/saldo/swap">Fazer Swap</StyledLink>
                             <StyledLink to="/saldo/historico">Ver histórico</StyledLink>
                         </Section>
-
-                        <Section
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.6 }}
-                        >
-                            <SectionTitle>GRUPO</SectionTitle>
-                            {aluno && aluno.id_grupo ? (
-                                <Grupo />
-                            ) : (
-                                <>
-                                    <StyledLink to="/saldo/grupo/criar">Criar grupo</StyledLink>
-                                    <StyledLink to="/saldo/grupo/convites">Ver convites</StyledLink>
-                                </>
-                            )}
-                        </Section>
+                        {turmas.map((turma) => {
+                            const grupo = getGrupoByTurma(turma.id_turma);
+                            return (
+                                <Section
+                                    key={turma.id_turma}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: 0.6 }}
+                                >
+                                    <SectionTitle>{turma.nome} - {turma.alunos.find(aluno => aluno.aluno.matricula === user.matricula).saldo_turma} IC</SectionTitle>
+                                    {grupo ? (
+                                        <Grupo grupo={grupo} />
+                                    ) : (
+                                        <>
+                                            <StyledLink to="/saldo/grupo/criar">Criar grupo</StyledLink>
+                                            <StyledLink to="/saldo/grupo/convites">Ver convites</StyledLink>
+                                        </>
+                                    )}
+                                </Section>
+                            );
+                        })}
                     </>
                 ) : (
                     <>

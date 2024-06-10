@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Base from './Base';
 import Logout from '../components/Logout';
 import { CardContainer } from './loja/loja';
+import {Card, CardButton, CardItem} from "./professor";
 
 const AlunoContainer = styled(motion.div)`
     display: flex;
@@ -109,6 +110,7 @@ const Aluno = () => {
     const user = storedUser ? JSON.parse(storedUser) : null;
 
     const [aluno, setAluno] = useState(null);
+    const [turmas, setTurmas] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -125,6 +127,7 @@ const Aluno = () => {
                 const data = await response.json();
                 if (response.ok) {
                     setAluno(data.aluno);
+                    setTurmas(data.turmas);
                 } else {
                     setError(data.message);
                 }
@@ -176,19 +179,32 @@ const Aluno = () => {
                     <h2>INFORMAÇÕES</h2>
                     {error && <InfoItem style={{ color: 'red' }}>{error}</InfoItem>}
                     <InfoItem>Matrícula: {aluno ? aluno.matricula : 'Loading...'}</InfoItem>
-                    <InfoItem>Turma: {aluno ? aluno.id_turma : 'Loading...'}</InfoItem>
                     <InfoItem>Tipo: {aluno ? aluno.tipo : 'Loading...'}</InfoItem>
                     <InfoItem>Grupo: {aluno ? aluno.id_grupo : 'Loading...'}</InfoItem>
                 </InfoContainer>
             </AlunoContainer>
-            <ButtonContainer>
-                {aluno && !aluno.id_turma ? (
-                    <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
+            <CardContainer
+                initial={{opacity: 0}}
+                animate={{opacity: 1}}
+                transition={{duration: 0.5, delay: 0.6}}
+            >
+                <h2>TURMAS</h2>
+                {turmas.length > 0 ? (
+                    turmas.map((turma) => (
+                        <Card key={turma.id_turma}>
+                            <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
+                            <CardItem><strong>Meu Saldo:</strong> {turma.alunos.find(aluno => aluno.aluno.matricula === user.matricula).saldo_turma} IC</CardItem>
+                            <CardButton to={`/perfil/turma/${turma.id_turma}`}>Acessar</CardButton>
+                        </Card>
+                    ))
                 ) : (
-                    <StyledLink to={`/perfil/turma/${aluno ? aluno.id_turma : ''}`}>Ver turma</StyledLink>
+                    <h3>Não há turmas disponíveis</h3>
                 )}
+            </CardContainer>
+            <ButtonContainer>
+                <StyledLink to="/perfil/turma/entrar">Entrar em turma</StyledLink>
                 <LogoutButton>
-                    <Logout />
+                    <Logout/>
                 </LogoutButton>
             </ButtonContainer>
         </CardContainer>

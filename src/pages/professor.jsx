@@ -53,6 +53,8 @@ const CardContainer = styled(motion.div)`
     margin-bottom: 1em;
 `;
 
+export {CardContainer};
+
 const Card = styled.div`
     background-color: white;
     padding: 1em;
@@ -63,10 +65,14 @@ const Card = styled.div`
     justify-content: space-between;
 `;
 
+export {Card};
+
 const CardItem = styled.div`
     margin: 0.5em 0;
     font-size: 1em;
 `;
+
+export {CardItem};
 
 const CardButton = styled(Link)`
     padding: 0.8em 1em;
@@ -85,6 +91,8 @@ const CardButton = styled(Link)`
         background-color: #3700b3;
     }
 `;
+
+export {CardButton};
 
 const StyledLink = styled(Link)`
     display: inline-block;
@@ -191,7 +199,7 @@ const Professor = () => {
                     turmas.map((turma) => (
                         <Card key={turma.id_turma}>
                             <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
-                            <CardItem><strong>Quantidade alunos:</strong> {turma.turma.length}</CardItem>
+                            <CardItem><strong>Quantidade alunos:</strong> {turma.alunos.length}</CardItem>
                             <CardButton to={`/perfil/turma/${turma.id_turma}`}>Acessar</CardButton>
                         </Card>
                     ))

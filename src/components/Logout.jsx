@@ -1,9 +1,9 @@
 import React from 'react';
-import useLogout from "../util/auth";
+import userLogout from "../util/auth";
 
 
 const Logout = () => {
-    const logoutUser = useLogout();
+    const logoutUser = userLogout();
 
     return (
         <>
