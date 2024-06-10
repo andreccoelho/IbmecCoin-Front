@@ -22,6 +22,30 @@ const Header = styled(motion.div)`
     margin-bottom: 1em;
 `;
 
+const FilterContainer = styled.div`
+    margin-bottom: 1em;
+`;
+
+const FilterSelect = styled.select`
+    padding: 0.5em;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-family: 'Krub', sans-serif;
+    font-size: 1em;
+    color: #333;
+    width: 100%;
+`;
+
+const FilterInput = styled.input`
+    padding: 0.5em;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-family: 'Krub', sans-serif;
+    font-size: 1em;
+    color: #333;
+    width: 95%;
+`;
+
 const Section = styled(motion.div)`
     background-color: #f7f7f7;
     padding: 1em;
@@ -43,8 +67,8 @@ const CardItem = styled.p`
 `;
 
 const Message = styled.p`
-  color: ${props => (props.type === 'error' ? 'red' : 'green')};
-  margin: 0.5em 0;
+    color: ${props => (props.type === 'error' ? 'red' : 'green')};
+    margin: 0.5em 0;
 `;
 
 const AlunoHistorico = () => {
@@ -53,6 +77,8 @@ const AlunoHistorico = () => {
 
     const [transacoes, setTransacoes] = useState([]);
     const [error, setError] = useState(null);
+    const [filtro, setFiltro] = useState('data'); // Novo estado para filtro
+    const [search, setSearch] = useState(''); // Novo estado para busca
 
     useEffect(() => {
         const fetchTransacoes = async () => {
@@ -67,7 +93,10 @@ const AlunoHistorico = () => {
 
                 const data = await response.json();
                 if (response.ok) {
-                    setTransacoes(data.transacoes);
+                    setTransacoes(data.transacoes.map(transacao => ({
+                        ...transacao,
+                        tipo: transacao.receptor_id === 'loja' ? 'Compra' : 'Transferência'
+                    })));
                 } else {
                     setError(data.message);
                 }
@@ -81,6 +110,39 @@ const AlunoHistorico = () => {
             fetchTransacoes();
         }
     }, [user]);
+
+    const handleFiltroChange = (event) => {
+        setFiltro(event.target.value);
+    };
+
+    const handleSearchChange = (event) => {
+        setSearch(event.target.value);
+    };
+
+    const getSortedTransacoes = () => {
+        const searchLower = search.toLowerCase();
+        return [...transacoes]
+            .filter(transacao =>
+                String(transacao.emissor_nome).toLowerCase().includes(searchLower) ||
+                String(transacao.receptor_nome).toLowerCase().includes(searchLower) ||
+                String(transacao.valor).toLowerCase().includes(searchLower) ||
+                String(transacao.data).toLowerCase().includes(searchLower)
+            )
+            .sort((a, b) => {
+                switch (filtro) {
+                    case 'data':
+                        return new Date(b.data) - new Date(a.data);
+                    case 'receptor':
+                        return String(a.receptor_nome || '').localeCompare(String(b.receptor_nome || ''));
+                    case 'emissor':
+                        return String(a.emissor_nome || '').localeCompare(String(b.emissor_nome || ''));
+                    case 'valor':
+                        return parseFloat(b.valor) - parseFloat(a.valor);
+                    default:
+                        return 0;
+                }
+            });
+    };
 
     if (!user) {
         return (
@@ -105,14 +167,29 @@ const AlunoHistorico = () => {
                 >
                     <h1>HISTÓRICO DO ALUNO</h1>
                 </Header>
-
+                <FilterContainer>
+                    <FilterSelect value={filtro} onChange={handleFiltroChange}>
+                        <option value="data">Data</option>
+                        <option value="receptor">Destinatário</option>
+                        <option value="emissor">Emissor</option>
+                        <option value="valor">Valor</option>
+                    </FilterSelect>
+                </FilterContainer>
+                <FilterContainer>
+                    <FilterInput
+                        type="text"
+                        placeholder="Filtrar..."
+                        value={search}
+                        onChange={handleSearchChange}
+                    />
+                </FilterContainer>
                 <Section
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
                 >
                     <h2>LISTA DE TRANSAÇÕES</h2>
-                    {transacoes.map((transacao, index) => (
+                    {getSortedTransacoes().map((transacao, index) => (
                         <Card
                             key={index}
                             initial={{ opacity: 0 }}
@@ -121,8 +198,9 @@ const AlunoHistorico = () => {
                         >
                             <CardItem><strong>Data:</strong> {transacao.data}</CardItem>
                             <CardItem><strong>Valor:</strong> {transacao.valor}</CardItem>
-                            <CardItem><strong>Emissor:</strong> {transacao.emissor_id}</CardItem>
-                            <CardItem><strong>Receptor:</strong> {transacao.receptor_id}</CardItem>
+                            <CardItem><strong>Emissor:</strong> {transacao.emissor_nome}</CardItem>
+                            <CardItem><strong>Receptor:</strong> {transacao.receptor_nome}</CardItem>
+                            <CardItem><strong>Tipo:</strong> {transacao.tipo}</CardItem> {/* Novo campo tipo */}
                         </Card>
                     ))}
                 </Section>

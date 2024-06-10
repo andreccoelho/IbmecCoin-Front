@@ -30,6 +30,7 @@ import Saldo from "./pages/saldo";
 import Qrcode from "./pages/qrcode";
 import Grupo from "./pages/grupo/informacao";
 import Grupos from "./pages/grupo/grupos";
+import Swap from "./pages/aluno/swap";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -49,6 +50,7 @@ root.render(
         <Route path="/" element={<Index />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/saldo/historico" element={<HistoricoAluno />} />
+        <Route path="/saldo/swap" element={<Swap />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/registro" element={<Registro />} />
         <Route path="/saldo/grupo/aceitar" element={<GrupoAceitar />} />
@@ -56,7 +58,7 @@ root.render(
         <Route path="/saldo/grupo/convites" element={<GrupoConvites />} />
         <Route path="/saldo/grupo/criar" element={<GrupoCriar />} />
         <Route path="/saldo/grupo" element={<Grupo />} />
-        <Route path="/saldo/grupo/transferir/:destinatario_matricula" element={<GrupoTransferir />} />
+        <Route path="/saldo/grupo/transferir/:destinatario_matricula/:id_turma" element={<GrupoTransferir />} />
         <Route path="/saldo/grupos" element={<Grupos />} />
         <Route path="/loja/item/:id_item" element={<LojaItem />} />
         <Route path="/loja" element={<Loja />} />

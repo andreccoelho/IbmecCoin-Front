@@ -120,6 +120,7 @@ const LojaItens = () => {
     const user = storedUser ? JSON.parse(storedUser) : null;
     const [userType, setUserType] = useState(null);
     const [aluno, setAluno] = useState(null);
+    const [turmas, setTurmas] = useState([]);
     const [isCheckingUser, setIsCheckingUser] = useState(true);
     const [itens, setItens] = useState([]);
     const [nome, setNome] = useState('');
@@ -153,6 +154,7 @@ const LojaItens = () => {
                 const data = await response.json();
                 if (response.ok) {
                     setAluno(data.aluno);
+                    setTurmas(data.turmas);
                 } else {
                     setError(data.message);
                 }
@@ -221,7 +223,7 @@ const LojaItens = () => {
         }
     };
 
-    const handleBuyItem = async (id_item) => {
+    const handleBuyItem = async (id_item, id_turma) => {
         setLoading(prev => ({ ...prev, [id_item]: true }));
         try {
             const response = await fetch(`http://localhost:5000/loja/comprar`, {
@@ -229,7 +231,7 @@ const LojaItens = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id_item, matricula: user.matricula }),
+                body: JSON.stringify({ id_item, matricula: user.matricula, id_turma: id_turma }),
             });
 
             const data = await response.json();
@@ -281,24 +283,18 @@ const LojaItens = () => {
                     <h1>Loja</h1>
                 </Header>
 
-                {aluno && (
-                    <CardContainer
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                    >
-                        <h2>SALDO</h2>
-                        <p>Seu saldo é de IbmecCoins {aluno.saldo}</p>
-                    </CardContainer>
-                )}
-
                 <CardContainer
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                    <h2>ITENS</h2>
-                    {itens.map((item) => (
+                    <h2>Global</h2>
+
+                    {aluno && (
+                            <p>Saldo: {aluno.saldo} IC</p>
+                    )}
+
+                    {itens.filter(item => item.id_turma === null).map((item) => (
                         <Card
                             key={item.id_item}
                             initial={{ opacity: 0 }}
@@ -313,7 +309,7 @@ const LojaItens = () => {
                             </CardItem>
                             {userType === 'aluno' && (
                                 <CardButton
-                                    onClick={() => handleBuyItem(item.id_item)}
+                                    onClick={() => handleBuyItem(item.id_item, 0)}
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.5, delay: 0.8 }}
@@ -325,6 +321,56 @@ const LojaItens = () => {
                         </Card>
                     ))}
                 </CardContainer>
+
+                {turmas.map((turma) => (
+                    <CardContainer
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        <h2>{
+                            turma.nome
+                        }
+                        </h2>
+
+                        <p>
+                            Saldo: {
+                                turma.alunos.find(aluno => aluno.aluno.matricula === user.matricula).saldo_turma
+                            }
+                        </p>
+
+                        {turma.itens.length === 0 && (
+                            <h3>Não há itens</h3>
+                        )}
+
+                        {turma.itens.filter(item => item.id_turma === turma.id_turma).map((item) => (
+                            <Card
+                                key={item.id_item}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 0.6 + item.id_item * 0.1 }}
+                            >
+                                <CardItem>
+                                    <strong>Nome:</strong> <Link to={`/loja/item/${item.id_item}`}>{item.nome}</Link>
+                                </CardItem>
+                                <CardItem>
+                                    <strong>Preço:</strong> {item.valor}
+                                </CardItem>
+                                {userType === 'aluno' && (
+                                    <CardButton
+                                        onClick={() => handleBuyItem(item.id_item, item.id_turma)}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.5, delay: 0.8 }}
+                                        disabled={loading[item.id_item]}
+                                    >
+                                        {loading[item.id_item] ? <ClipLoader color="#fff" size={20} /> : 'Comprar'}
+                                    </CardButton>
+                                )}
+                            </Card>
+                        ))}
+                    </CardContainer>
+                ))}
 
                 {userType === 'professor' && (
                     <Form

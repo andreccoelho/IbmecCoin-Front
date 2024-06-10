@@ -1,76 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import Base from '../Base';
-import { Link, useNavigate } from 'react-router-dom';
-
-const ConvitesContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1em;
-  background-color: #fff;
-  font-family: 'Krub', sans-serif;
-  color: #333;
-`;
-
-const Header = styled(motion.div)`
-  background-color: var(--primaria);
-  color: white;
-  padding: 1em;
-  border-radius: 10px;
-  text-align: center;
-  margin-bottom: 1em;
-`;
-
-const Section = styled(motion.div)`
-  background-color: #f7f7f7;
-  padding: 1em;
-  border-radius: 10px;
-  margin-bottom: 1em;
-`;
-
-const CardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-`;
-
-const Card = styled(motion.div)`
-  background-color: white;
-  padding: 1em;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const CardItem = styled.div`
-  margin: 0.5em 0;
-  font-size: 1em;
-`;
-
-const CardButton = styled(motion.button)`
-  padding: 0.8em 1em;
-  border-radius: 5px;
-  background-color: var(--primaria);
-  color: white;
-  font-size: 1em;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-  margin-top: 1em;
-
-  &:hover {
-    background-color: #3700b3;
-  }
-`;
-
-const Message = styled(motion.p)`
-  color: ${props => (props.type === 'error' ? 'red' : 'green')};
-  margin: 0.5em 0;
-`;
+import { useNavigate } from 'react-router-dom';
+import { Card, CardButton, CardContainer, CardItem, ConvitesContainer, Header, Message, Section } from "./Style";
 
 const Convites = () => {
     const [convites, setConvites] = useState([]);
@@ -88,38 +19,53 @@ const Convites = () => {
                 return;
             }
 
+            console.log('Fetching convites for user:', user);
+
             try {
+                const requestBody = JSON.stringify({ matricula: user.matricula });
+                console.log('Request body:', requestBody);
+
                 const response = await fetch('http://localhost:5000/grupo/convites', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ matricula: user.matricula }),
+                    body: requestBody,
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
                 const data = await response.json();
-                setConvites(data.convites);
+                if (!response.ok) {
+                    if (data.convites && data.convites.length === 0) {
+                        setConvites([]);
+                        setError(data.message);
+                    } else {
+                        throw new Error(data.message || `HTTP error! status: ${response.status}`);
+                    }
+                } else {
+                    console.log('Convites fetched:', data);
+                    setConvites(data.convites);
+                    setError(null); // Clear any previous error
+                }
             } catch (error) {
                 console.error('Error fetching convites:', error);
-                setError('An error occurred. Please try again.');
+                setError(error.message || 'An error occurred. Please try again.');
             }
         };
 
         fetchConvites();
-    }, [user]);
+    }, [user?.matricula]);
 
     const handleAcceptInvite = async (id_convite) => {
         try {
+            const requestBody = JSON.stringify({ id_convite, matricula: user.matricula });
+            console.log('Accept invite request body:', requestBody);
+
             const response = await fetch('http://localhost:5000/grupo/aceitar', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ id_convite, matricula: user.matricula }),
+                body: requestBody,
             });
 
             if (!response.ok) {
@@ -127,12 +73,13 @@ const Convites = () => {
             }
 
             const data = await response.json();
+            console.log('Invite accepted:', data);
             setConvites(convites.filter(convite => convite.id_convite !== id_convite));
             alert('Convite aceito com sucesso!');
             navigate('/saldo');
         } catch (error) {
             console.error('Error accepting invite:', error);
-            setError('An error occurred. Please try again.');
+            setError(error.message || 'An error occurred. Please try again.');
         }
     };
 
@@ -167,7 +114,7 @@ const Convites = () => {
                     transition={{ duration: 0.5, delay: 0.4 }}
                 >
                     <h2>Lista de convites</h2>
-                    {convites.length === 0 ? (
+                    {convites.length === 0 && !error ? (
                         <Message>Não há convites pendentes</Message>
                     ) : (
                         <CardContainer>

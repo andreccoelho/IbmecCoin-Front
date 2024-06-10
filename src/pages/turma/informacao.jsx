@@ -126,7 +126,7 @@ const Turma = () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ id_turma, matricula: user.matricula }),
+                    body: JSON.stringify({ id_turma }),
                 });
 
                 const data = await response.json();
@@ -201,7 +201,7 @@ const Turma = () => {
                     {turma ? (
                         <>
                             <InfoItem>Matéria: {turma.nome}</InfoItem>
-                            <InfoItem>Qtd. Alunos: {turma.turma.length}</InfoItem>
+                            <InfoItem>Qtd. Alunos: {turma.alunos.length}</InfoItem>
                             <InfoItem>Professor: {turma.professor.nome}</InfoItem>
                         </>
                     ) : (
@@ -214,8 +214,8 @@ const Turma = () => {
                     transition={{ duration: 0.5, delay: 0.6 }}
                 >
                     <h2>ALUNOS</h2>
-                    {turma && turma.turma.length > 0 ? (
-                        turma.turma.map((aluno) => (
+                    {turma && turma.alunos.length > 0 ? (
+                        turma.alunos.map(({ aluno, saldo_turma }) => (
                             <Card
                                 key={aluno.matricula}
                                 initial={{ opacity: 0 }}
@@ -224,7 +224,7 @@ const Turma = () => {
                             >
                                 <CardItem><strong>Matrícula:</strong> {aluno.matricula}</CardItem>
                                 <CardItem><strong>Nome:</strong> {aluno.nome}</CardItem>
-                                <CardItem><strong>Saldo:</strong> {aluno.saldo}</CardItem>
+                                <CardItem><strong>Saldo:</strong> {saldo_turma}</CardItem>
                             </Card>
                         ))
                     ) : (

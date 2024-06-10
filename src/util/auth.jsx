@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
-const useLogout = () => {
+// useLogout: função que remove o usuário do localStorage e redireciona para a página inicial
+const userLogout = () => {
     const navigate = useNavigate();
 
     const logoutUser = () => {
@@ -11,4 +12,4 @@ const useLogout = () => {
     return logoutUser;
 };
 
-export default useLogout;
+export default userLogout;
