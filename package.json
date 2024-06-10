@@ -1,10 +1,13 @@
 {
   "name": "um-react",
+  "homepage": "https://andreccoelho.github.io/IbmecCoin-Front/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "proxy": "http://localhost:5000",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-windows": "SET PUBLIC_URL=/&& webpack serve --config ./webpack.config.js --mode development --port 3000",
     "start-linux": "PUBLIC_URL=/ webpack serve --config ./webpack.config.js --mode development --port 3000",
@@ -15,6 +18,7 @@
   "dependencies": {
     "firebase": "^10.6.0",
     "framer-motion": "^11.2.10",
+    "gh-pages": "^6.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",

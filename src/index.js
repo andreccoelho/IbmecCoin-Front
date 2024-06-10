@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import { auth } from "./config/Firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -22,7 +22,6 @@ import QrCodeFoto from './pages/qrcode/foto';
 import QrCodeLeitor from './pages/qrcode/leitor';
 import QrCodeRegistroToken from './pages/qrcode/registro-token';
 import QrCodeValidar from './pages/qrcode/validar';
-import TurmaCriar from './pages/turma/criar';
 import TurmaEntrar from './pages/turma/entrar';
 import Turma from './pages/turma/informacao';
 import Perfil from "./pages/perfil";
@@ -45,7 +44,7 @@ onAuthStateChanged(auth, (user)=> {
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/perfil" element={<Perfil />} />
@@ -74,6 +73,6 @@ root.render(
         <Route path="/perfil/turma/:id_turma" element={<Turma />} />
         <Route path="/saldo" element={<Saldo />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );

@@ -6,7 +6,7 @@ import {get_page} from "../../util/generic";
 
 const Header = () => {
     let pagina_atual = get_page(window.location.href);
-    const [activeTab, setActiveTab] = useState(pagina_atual);
+    const [activeTab] = useState(pagina_atual);
 
     return (
         <NavBarContainer>
