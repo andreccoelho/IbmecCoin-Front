@@ -5,70 +5,70 @@ import { useNavigate } from "react-router-dom";
 import Base from "../Base";
 
 const GruposContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1em;
-  background-color: #fff;
-  font-family: 'Krub', sans-serif;
-  color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #fff;
+    font-family: 'Krub', sans-serif;
+    color: #333;
 `;
 
 const Header = styled(motion.div)`
-  background-color: var(--primaria);
-  color: white;
-  padding: 1em;
-  border-radius: 10px;
-  text-align: center;
-  margin-bottom: 1em;
+    background-color: var(--primaria);
+    color: white;
+    padding: 1em;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 1em;
 `;
 
 const GrupoCard = styled(motion.div)`
-  background-color: #f7f7f7;
-  padding: 1em;
-  border-radius: 10px;
-  margin-bottom: 1em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f7f7f7;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const GrupoTitle = styled.h2`
-  margin: 0 0 0.5em;
-  color: var(--primaria);
+    margin: 0 0 0.5em;
+    color: var(--primaria);
 `;
 
 const GrupoDescription = styled.p`
-  margin: 0 0 0.5em;
-  font-size: 1em;
+    margin: 0 0 0.5em;
+    font-size: 1em;
 `;
 
 const GrupoCreator = styled.p`
-  margin: 0 0 1em;
-  font-size: 1em;
-  font-weight: bold;
+    margin: 0 0 1em;
+    font-size: 1em;
+    font-weight: bold;
 `;
 
 const MemberList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 `;
 
 const MemberItem = styled.li`
-  margin: 0.5em 0;
-  background-color: white;
-  padding: 0.5em;
-  border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin: 0.5em 0;
+    background-color: white;
+    padding: 0.5em;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const MemberInfo = styled.p`
-  margin: 0;
-  font-size: 0.9em;
+    margin: 0;
+    font-size: 0.9em;
 `;
 
 const Message = styled(motion.p)`
-  color: ${props => (props.type === 'error' ? 'red' : 'green')};
-  margin: 0.5em 0;
+    color: ${props => (props.type === 'error' ? 'red' : 'green')};
+    margin: 0.5em 0;
 `;
 
 const Grupos = () => {
@@ -79,47 +79,68 @@ const Grupos = () => {
     const [isCheckingUser, setIsCheckingUser] = useState(true);
 
     const [grupos, setGrupos] = useState([]);
+    const [turmas, setTurmas] = useState([]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        const checkUser = () => {
-            if (user) {
-                setUserType(user.tipo);
-                setIsCheckingUser(false);
-            } else {
-                setIsCheckingUser(true);
-                navigate('/');
+        if (user) {
+            setUserType(user.tipo);
+            setIsCheckingUser(false);
+        } else {
+            setIsCheckingUser(true);
+            navigate('/');
+        }
+    }, [navigate, user]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (user && user.tipo === 'professor') {
+                try {
+                    const responseGrupos = await fetch('http://localhost:5000/grupo/grupos', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    const dataGrupos = await responseGrupos.json();
+                    if (responseGrupos.ok) {
+                        setGrupos(dataGrupos.grupos);
+                    } else {
+                        setError(dataGrupos.message);
+                    }
+
+                    const responseTurmas = await fetch('http://localhost:5000/turmas', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ matricula: user['matricula'] }),
+                    });
+
+                    const dataTurmas = await responseTurmas.json();
+                    if (responseTurmas.ok) {
+                        setTurmas(dataTurmas.turmas);
+                    } else {
+                        setError('Erro ao buscar turmas.');
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    setError('An error occurred. Please try again.');
+                }
             }
         };
 
-        const fetchGrupos = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/grupo/grupos', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    setGrupos(data.grupos);
-                } else {
-                    setError(data.message);
-                }
-            } catch (error) {
-                console.error('Error fetching grupos:', error);
-                setError('An error occurred. Please try again.');
-            }
+        if (!isCheckingUser) {
+            fetchData();
         }
+    }, [isCheckingUser, user]);
 
-        checkUser();
-
-        if (user && user.tipo === 'professor') {
-            fetchGrupos();
-        }
-    }, [navigate, user]);
+    const getTurmaNome = (idTurma) => {
+        const turma = turmas.find(t => t.id === idTurma);
+        return turma ? turma.nome : 'Turma não encontrada';
+    };
 
     if (isCheckingUser) {
         return <div>Verificando usuário...</div>;
@@ -161,7 +182,7 @@ const Grupos = () => {
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.6 + grupo.id_grupo * 0.1 }}
                         >
-                            <GrupoTitle>{grupo.nome}</GrupoTitle>
+                            <GrupoTitle>{`${grupo.nome} - ${getTurmaNome(grupo.id_turma)}`}</GrupoTitle>
                             <GrupoDescription>{grupo.descricao}</GrupoDescription>
                             <GrupoCreator>Criador ID: {grupo.criador_id}</GrupoCreator>
                             <h3>Membros:</h3>

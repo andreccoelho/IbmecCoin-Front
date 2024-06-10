@@ -1,58 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Base from '../Base';
 import { useNavigate } from "react-router-dom";
 
 const QrcodeContainer = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1em;
-  background-color: #fff;
-  font-family: 'Krub', sans-serif;
-  color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #fff;
+    font-family: 'Krub', sans-serif;
+    color: #333;
 `;
 
 const Header = styled(motion.div)`
-  background-color: var(--primaria);
-  color: white;
-  padding: 1em;
-  border-radius: 10px;
-  text-align: center;
-  margin-bottom: 1em;
+    background-color: var(--primaria);
+    color: white;
+    padding: 1em;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 1em;
 `;
 
 const Form = styled(motion.form)`
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  background-color: #f7f7f7;
-  padding: 1em;
-  border-radius: 10px;
-  margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    background-color: #f7f7f7;
+    padding: 1em;
+    border-radius: 10px;
+    margin-bottom: 1em;
 `;
 
 const Input = styled.input`
-  padding: 0.8em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1em;
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+`;
+
+const Select = styled.select`
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
 `;
 
 const Button = styled(motion.button)`
-  padding: 0.8em 1em;
-  border-radius: 5px;
-  background-color: var(--primaria);
-  color: white;
-  font-size: 1em;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
+    padding: 0.8em 1em;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
 
-  &:hover {
-    background-color: #3700b3;
-  }
+    &:hover {
+        background-color: #3700b3;
+    }
 `;
 
 const Message = styled(motion.p)`
@@ -67,10 +74,39 @@ const QrcodeCriar = () => {
     const [valor, setValor] = useState('');
     const [qtdUsos, setQtdUsos] = useState('');
     const [validadeData, setValidadeData] = useState('');
+    const [idTurma, setIdTurma] = useState(''); // Novo estado para o id da turma
+    const [turmas, setTurmas] = useState([]); // Novo estado para armazenar as turmas
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchTurmas = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/turma/turmas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ matricula: user['matricula'] }),
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setTurmas(data.turmas);
+                } else {
+                    setError('Erro ao buscar turmas.');
+                }
+            } catch (error) {
+                console.error('Error fetching turmas:', error);
+                setError('An error occurred. Please try again.');
+            }
+        };
+
+        if (user) {
+            fetchTurmas();
+        }
+    }, [user]);
 
     const handleCreateQrcode = async (e) => {
         e.preventDefault();
@@ -84,6 +120,7 @@ const QrcodeCriar = () => {
                     valor,
                     qtd_usos: qtdUsos,
                     validade_data: validadeData,
+                    id_turma: idTurma, // Adicionando id da turma no corpo da requisição
                     matricula: user['matricula'],
                 }),
             });
@@ -94,6 +131,7 @@ const QrcodeCriar = () => {
                 setValor('');
                 setQtdUsos('');
                 setValidadeData('');
+                setIdTurma(''); // Resetar o campo id da turma
                 navigate('/qrcode');
             } else {
                 setError(data.message);
@@ -179,10 +217,25 @@ const QrcodeCriar = () => {
                         onChange={(e) => setValidadeData(e.target.value)}
                         required
                     />
+                    <label htmlFor="id_turma">Turma:</label> {/* Novo campo select */}
+                    <Select
+                        name="id_turma"
+                        id="id_turma"
+                        value={idTurma}
+                        onChange={(e) => setIdTurma(e.target.value)}
+                        required
+                    >
+                        <option value="">Selecione uma turma</option>
+                        {turmas.map(turma => (
+                            <option key={turma.id} value={turma.id}>
+                                {turma.nome}
+                            </option>
+                        ))}
+                    </Select>
                     <Button type="submit"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.8 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5, delay: 0.8 }}
                     >
                         Criar
                     </Button>

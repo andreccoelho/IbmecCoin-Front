@@ -1,10 +1,10 @@
 {
   "name": "um-react",
-  "homepage": "https://andreccoelho.github.io/IbmecCoin-Front/",
+  "homepage": "https://mlutegar.github.io/ibmeccoin_front_teste/",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "proxy": "http://localhost:5000",
+  "proxy": "http://http://localhost:5000",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",

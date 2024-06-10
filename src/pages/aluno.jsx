@@ -189,7 +189,7 @@ const Aluno = () => {
                 transition={{duration: 0.5, delay: 0.6}}
             >
                 <h2>TURMAS</h2>
-                {turmas.length > 0 ? (
+                {turmas && turmas.length > 0 ? (
                     turmas.map((turma) => (
                         <Card key={turma.id_turma}>
                             <CardItem><strong>Nome:</strong> {turma.nome}</CardItem>
