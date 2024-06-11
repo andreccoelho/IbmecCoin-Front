@@ -85,7 +85,7 @@ const CriarGrupo = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nome, descricao, matricula: user['matricula'] }),
+                body: JSON.stringify({ nome, descricao, matricula: user['matricula'], id_turma: localStorage.getItem('id_turma') }),
             });
 
             const data = await response.json();

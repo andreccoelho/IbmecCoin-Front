@@ -77,6 +77,7 @@ const Grupos = () => {
     const [error, setError] = useState(null);
     const [userType, setUserType] = useState(null);
     const [isCheckingUser, setIsCheckingUser] = useState(true);
+    const [hasFetched, setHasFetched] = useState(false);
 
     const [grupos, setGrupos] = useState([]);
     const [turmas, setTurmas] = useState([]);
@@ -88,7 +89,6 @@ const Grupos = () => {
             setUserType(user.tipo);
             setIsCheckingUser(false);
         } else {
-            setIsCheckingUser(true);
             navigate('/');
         }
     }, [navigate, user]);
@@ -111,7 +111,7 @@ const Grupos = () => {
                         setError(dataGrupos.message);
                     }
 
-                    const responseTurmas = await fetch('http://localhost:5000/turmas', {
+                    const responseTurmas = await fetch('http://localhost:5000/turma/turmas', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -128,14 +128,16 @@ const Grupos = () => {
                 } catch (error) {
                     console.error('Error fetching data:', error);
                     setError('An error occurred. Please try again.');
+                } finally {
+                    setHasFetched(true); // Marca que a tentativa de fetch foi feita
                 }
             }
         };
 
-        if (!isCheckingUser) {
+        if (!isCheckingUser && userType === 'professor' && !hasFetched) {
             fetchData();
         }
-    }, [isCheckingUser, user]);
+    }, [isCheckingUser, userType, user, hasFetched]);
 
     const getTurmaNome = (idTurma) => {
         const turma = turmas.find(t => t.id === idTurma);

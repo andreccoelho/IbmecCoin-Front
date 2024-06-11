@@ -41,18 +41,38 @@ const StyledLink = styled(Link)`
     display: inline-block;
     text-align: center;
     padding: 0.8em 1em;
-    margin: 0.5em 0;
     border-radius: 5px;
     background-color: var(--primaria);
     color: white;
     font-size: 1em;
     text-decoration: none;
     transition: background 0.3s ease;
+    margin-top: 0.5em;
+    margin-right: 1.5em;
 
     &:hover {
         background-color: #3700b3;
     }
 `;
+
+const StyledSpan = styled.span`
+    display: inline-block;
+    text-align: center;
+    padding: 0.8em 1em;
+    border-radius: 5px;
+    background-color: var(--primaria);
+    color: white;
+    font-size: 1em;
+    text-decoration: none;
+    transition: background 0.3s ease;
+    margin-top: 0.5em;
+    margin-right: 1.5em;
+
+  &:hover {
+      background-color: #3700b3;
+  }
+`;
+
 
 const Message = styled.p`
     color: ${props => props.type === 'error' ? 'red' : 'green'};
@@ -117,6 +137,11 @@ const Saldo = () => {
         return grupos.find(grupo => grupo.id_turma === turmaId);
     };
 
+    const handleCriarGrupo = (id_turma) => {
+        localStorage.setItem('id_turma', id_turma);
+        navigate('grupo/criar');
+    }
+
     if (isCheckingUser) {
         return <div>Verificando usuário...</div>;
     }
@@ -162,7 +187,7 @@ const Saldo = () => {
                                         <Grupo grupo={grupo} />
                                     ) : (
                                         <>
-                                            <StyledLink to="/saldo/grupo/criar">Criar grupo</StyledLink>
+                                            <StyledSpan onClick={() => handleCriarGrupo(turma.id_turma)}>Criar grupo</StyledSpan>
                                             <StyledLink to="/saldo/grupo/convites">Ver convites</StyledLink>
                                         </>
                                     )}

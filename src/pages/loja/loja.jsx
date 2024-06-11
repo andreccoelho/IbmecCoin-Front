@@ -24,7 +24,7 @@ const Header = styled(motion.div)`
     margin-bottom: 1em;
 `;
 
-export {Header};
+export { Header };
 
 const CardContainer = styled.div`
     display: flex;
@@ -95,6 +95,13 @@ const Input = styled.input`
     font-size: 1em;
 `;
 
+const Select = styled.select`
+    padding: 0.8em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+`;
+
 const Button = styled(motion.button)`
     padding: 0.8em 1em;
     border-radius: 5px;
@@ -121,13 +128,16 @@ const LojaItens = () => {
     const [userType, setUserType] = useState(null);
     const [aluno, setAluno] = useState(null);
     const [turmas, setTurmas] = useState([]);
+    const [turmasProfessor, setTurmasProfessor] = useState([]);
     const [isCheckingUser, setIsCheckingUser] = useState(true);
     const [itens, setItens] = useState([]);
     const [nome, setNome] = useState('');
     const [valor, setValor] = useState('');
+    const [idTurma, setIdTurma] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState({});
+    const [hasFetched, setHasFetched] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -164,6 +174,28 @@ const LojaItens = () => {
             }
         };
 
+        const fetchTurmas = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/turma/turmas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ matricula: user.matricula }),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    setTurmasProfessor(data.turmas);
+                } else {
+                    setError(data.message);
+                }
+            } catch (error) {
+                console.error('Error fetching turmas:', error);
+                setError('An error occurred. Please try again.');
+            }
+        }
+
         const fetchItens = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/loja/itens`, {
@@ -185,14 +217,20 @@ const LojaItens = () => {
             }
         };
 
-        checkUser();
-
-        if (user && user.tipo === 'aluno') {
-            fetchAlunoData();
-        }
-
         fetchItens();
-    }, [itens]);
+
+        if (!hasFetched) {
+            checkUser();
+
+            if (user && user.tipo === 'aluno') {
+                fetchAlunoData();
+            } else if (user && user.tipo === 'professor') {
+                fetchTurmas();
+            }
+
+            setHasFetched(true);
+        }
+    }, [user, hasFetched, navigate]);
 
     if (isCheckingUser) {
         return <div>Verificando usuário...</div>;
@@ -206,7 +244,7 @@ const LojaItens = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ nome, valor }),
+                body: JSON.stringify({ nome, valor, id_turma: idTurma || null }),
             });
 
             const data = await response.json();
@@ -214,6 +252,7 @@ const LojaItens = () => {
                 setSuccess('Item adicionado com sucesso!');
                 setNome('');
                 setValor('');
+                setIdTurma('');
             } else {
                 setError(data.message);
             }
@@ -291,7 +330,7 @@ const LojaItens = () => {
                     <h2>Global</h2>
 
                     {aluno && (
-                            <p>Saldo: {aluno.saldo} IC</p>
+                        <p>Saldo: {aluno.saldo} IC</p>
                     )}
 
                     {itens.filter(item => item.id_turma === null).map((item) => (
@@ -322,22 +361,14 @@ const LojaItens = () => {
                     ))}
                 </CardContainer>
 
-                {turmas.map((turma) => (
+                {userType === 'aluno' && turmas.map((turma) => (
                     <CardContainer
+                        key={turma.id_turma}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
                     >
-                        <h2>{
-                            turma.nome
-                        }
-                        </h2>
-
-                        <p>
-                            Saldo: {
-                                turma.alunos.find(aluno => aluno.aluno.matricula === user.matricula).saldo_turma
-                            }
-                        </p>
+                        <h2>{turma.nome}</h2>
 
                         {turma.itens.length === 0 && (
                             <h3>Não há itens</h3>
@@ -372,6 +403,37 @@ const LojaItens = () => {
                     </CardContainer>
                 ))}
 
+                {userType === 'professor' && turmasProfessor.map((turma) => (
+                    <CardContainer
+                        key={turma.id_turma}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                    >
+                        <h2>{turma.nome}</h2>
+
+                        {turma.itens.length === 0 && (
+                            <h3>Não há itens</h3>
+                        )}
+
+                        {turma.itens.filter(item => item.id_turma === turma.id_turma).map((item) => (
+                            <Card
+                                key={item.id_item}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5, delay: 0.6 + item.id_item * 0.1 }}
+                            >
+                                <CardItem>
+                                    <strong>Nome:</strong> <Link to={`/loja/item/${item.id_item}`}>{item.nome}</Link>
+                                </CardItem>
+                                <CardItem>
+                                    <strong>Preço:</strong> {item.valor}
+                                </CardItem>
+                            </Card>
+                        ))}
+                    </CardContainer>
+                ))}
+
                 {userType === 'professor' && (
                     <Form
                         onSubmit={handleAddItem}
@@ -398,6 +460,22 @@ const LojaItens = () => {
                             onChange={(e) => setValor(e.target.value)}
                             required
                         />
+                        <label htmlFor="turma">Turma:</label>
+                        <Select
+                            id="turma"
+                            name="turma"
+                            value={idTurma}
+                            onChange={(e) => setIdTurma(e.target.value)}
+                            required
+                        >
+                            <option value="">Selecione uma turma</option>
+                            <option value="0">Global</option>
+                            {turmasProfessor.map(turma => (
+                                <option key={turma.id_turma} value={turma.id_turma}>
+                                    {turma.nome}
+                                </option>
+                            ))}
+                        </Select>
                         <Button
                             type="submit"
                             initial={{ opacity: 0 }}
