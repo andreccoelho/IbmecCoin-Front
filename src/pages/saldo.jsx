@@ -73,6 +73,8 @@ const StyledSpan = styled.span`
   }
 `;
 
+export { StyledLink, StyledSpan };
+
 
 const Message = styled.p`
     color: ${props => props.type === 'error' ? 'red' : 'green'};

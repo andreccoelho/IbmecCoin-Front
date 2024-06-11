@@ -100,7 +100,7 @@ const Index = () => {
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <Img src="/imagens/ibmec.png" alt="decorative" />
+                    <Img src="imagens/ibmec.png" alt="decorative" />
                 </ImgContainer>
                 <Title
                     initial={{ opacity: 0 }}

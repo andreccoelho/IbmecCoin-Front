@@ -75,7 +75,7 @@ const Convidar = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ matricula: user.matricula, destinatario: matricula }),
+                body: JSON.stringify({ matricula: user.matricula, destinatario: matricula, id_turma: localStorage.getItem('id_turma') }),
             });
 
             const data = await response.json();

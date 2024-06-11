@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import Base from '../Base';
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
+import {StyledSpan} from "../saldo";
 
 const GrupoContainer = styled(motion.div)`
     display: flex;
@@ -71,29 +72,10 @@ const Button = styled(motion.button)`
     }
 `;
 
-const StyledLink = styled(Link)`
-    display: inline-block;
-    text-align: center;
-    padding: 0.8em 1em;
-    border-radius: 5px;
-    background-color: var(--primaria);
-    color: white;
-    font-size: 1em;
-    text-decoration: none;
-    transition: background 0.3s ease;
-
-    &:hover {
-        background-color: #3700b3;
-    }
-`;
-
-const Message = styled(motion.p)`
-    color: ${props => (props.type === 'error' ? 'red' : 'green')};
-    margin: 0.5em 0;
-`;
-
 const Grupo = ({ grupo }) => {
     const storedUser = localStorage.getItem('user');
+    const [error, setError] = React.useState(null);
+
     const user = storedUser ? JSON.parse(storedUser) : null;
     const navigate = useNavigate();
 
@@ -104,7 +86,7 @@ const Grupo = ({ grupo }) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ matricula: user.matricula, id_grupo: grupo.id_grupo })
+                body: JSON.stringify({ matricula: user.matricula, id_grupo: grupo.id_grupo, id_turma: grupo.id_turma})
             });
 
             const data = await response.json();
@@ -122,6 +104,11 @@ const Grupo = ({ grupo }) => {
 
     const handleTransfer = (matricula) => {
         navigate(`/saldo/grupo/transferir/${matricula}/${grupo.id_turma}`);
+    }
+
+    const handleConvidarGrupo = (id_turma) => {
+        localStorage.setItem('id_turma', id_turma);
+        navigate(`grupo/convidar`);
     }
 
     if (!user) {
@@ -181,7 +168,7 @@ const Grupo = ({ grupo }) => {
                     ) : (
                         <InfoItem>Nenhum</InfoItem>
                     )}
-                    <StyledLink to="/saldo/grupo/convidar">Convidar</StyledLink>
+                    <StyledSpan onClick={() => handleConvidarGrupo(grupo.id_turma)}>Convidar</StyledSpan>
                 </InfoContainer>
                 <Button
                     onClick={handleLeaveGroup}
